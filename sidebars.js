@@ -1,6 +1,6 @@
 module.exports = {
   mySidebar: [
-    'getting-started',
+    'index',
     'release-notes',
     {
       type: 'category', 
