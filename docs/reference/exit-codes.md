@@ -4,7 +4,7 @@ sidebar_label: "Exit codes"
 
 # SAP LSAM-specific exit codes
 
-The following is a list of SAP LSAM exit conditions for failed jobs. If an exit condition is not in this list, the LSAM Exit Code position of the return status is a Windows error code. Refer to [Windows System Errors](https://help.smatechnologies.com/opcon/core/latest/Files/Concepts/Windows%20System%20Errors.htm) in the **Concepts** online help.
+The following is a list of SAP LSAM exit conditions for failed jobs. If an exit condition is not in this list, the LSAM Exit Code position of the return status is a Windows error code. Refer to [Windows System Errors](https://help.smatechnologies.com/opcon/core/reference/Windows-System-Errors) in the **Concepts** online help.
 
 |Exit Code|Description|
 |--- |--- |

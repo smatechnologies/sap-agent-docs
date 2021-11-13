@@ -7,7 +7,7 @@ sidebar_label: 'Configuration file'
 The SAPLSAM.ini is the SAP LSAM configuration filename. The location of the SAPLSAM.ini file is in the <Configuration Directory\>\\SAP LSAM\\ directory.
 
 :::note
-The Configuration Directory is based on where you installed your programs. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/latest/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+The Configuration Directory is based on where you installed your programs. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Concepts** online help.
 :::
 
 The following settings are critical to the operation of the LSAM with OpCon:

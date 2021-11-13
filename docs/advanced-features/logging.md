@@ -5,7 +5,7 @@ The SMA OpCon Agent for SAP service writes processing information to the SAPLSAM
 The SMA OpCon Agent for SAP service writes processing information to the SAPLSAM.log files and the SMA OpCon JORS for SAP service writes processing information to the SAPJORS.log files. Both of these log files can be found in the <Output Directory\>\\SAP LSAM\\Log\\ log folder.
 
 :::note
-The Output Directory was configured during the installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/latest/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+The Output Directory was configured during the installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Concepts** online help.
 :::
 
 When log files reach a user-configured maximum size, the SMA OpCon Agent for SAP and SMA OpCon JORS for SAP services archive the log files. The <Output Directory\>\\SAP LSAM \\Log\\Archives\\ folder is the location of all archived log files. A folder exists in the Archives folder for each day the SMA OpCon Agent for SAP and SMA OpCon JORS for SAP services process.
@@ -42,7 +42,7 @@ For each job the SAP LSAM executes, it creates a job log and job spool file in t
 When each job completes, the LSAM immediately archives the files. The <Output Directory\>\\SAP LSAM\\Job Output\\Archives\\ folder is the location of all archived log files.
 
 :::note
-The Output Directory was configured during the installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/latest/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+The Output Directory was configured during the installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Concepts** online help.
 :::
 
 A folder exists in the Archives folder for each day the SAP LSAM and SAP JORS services process. The folder names use the following naming convention: yyyy_mm_dd (Weekday). For example, the folder name for `January 11, 2008 would be 2008_01_11 (Friday).

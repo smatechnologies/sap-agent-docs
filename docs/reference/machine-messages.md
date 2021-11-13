@@ -1,6 +1,6 @@
 # Machine messages
 
-To the right of the OpCon Job Status in the Operation Daily List screen, the SAP LSAM populates a 20-character message to communicate numeric job completion information. This information is located in the *Detailed Job Messages parameter* in *Enterprise Manager\>Operation\>Job Information screen\>Configuration Tab\>Operations Related Information Tab*. For additional information, refer to [Job Information](https://help.smatechnologies.com/opcon/core/latest/Files/UI/Enterprise-Manager/Job%20Information.htm) in the **Enterprise Manager** online help.
+To the right of the OpCon Job Status in the Operation Daily List screen, the SAP LSAM populates a 20-character message to communicate numeric job completion information. This information is located in the *Detailed Job Messages parameter* in *Enterprise Manager\>Operation\>Job Information screen\>Configuration Tab\>Operations Related Information Tab*. For additional information, refer to [Job Information](https://help.smatechnologies.com/opcon/core/Files/UI/Enterprise-Manager/Job-Information) in the **Enterprise Manager** online help.
 
 - For jobs that are running, the LSAM returns the SAP job number.
 - If the running job has child jobs, the LSAM returns the current status of the child job(s) in following format: <Child Name\> - <Current Status\>

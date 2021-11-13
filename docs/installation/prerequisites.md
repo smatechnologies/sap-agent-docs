@@ -36,7 +36,7 @@ Log on to the SAP system with the new OpCon Login account. Execute transaction S
 After entering the SAP login account and password into the SAPLSAM.ini file, start the SAP LSAM services on the SAM server. This service should connect to the SAP system. You can view the login connection results in the SAP LSAM log.
 
 :::note
-Output files (e.g., logs, reports, and job output files) reside in the Output Directory. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/latest/Concepts/File-Locations.md) in the **Concepts** online help.
+Output files (e.g., logs, reports, and job output files) reside in the Output Directory. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Concepts** online help.
 :::
 
 If the login failed or you cannot run SAP jobs with the SAP OpCon login, please revisit the SAP login profile and add the following roles and execute transaction SU53 again on the SAP system to verify proper authorization:
