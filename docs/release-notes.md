@@ -1,5 +1,11 @@
 # Release notes
 
+## SAP Agent 20.2.0
+
+2022 June
+
+:white_check_mark: **SAP-121**: Fixed an issue where an upgrade of the SAP system to version 2021+ required new versions of the libraries to connect to the system from the agent.
+
 ## SAP Agent 20.1.0
 
 2021 January
