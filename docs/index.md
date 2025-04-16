@@ -7,4 +7,4 @@ sidebar_label: 'SAP Agent'
 
 The SAP LSAM is an OpCon agent that allows OpCon to schedule SAP jobs within an SAP environment.
 
-The current version is 20.2.0.
+The current version is 21.0.0.

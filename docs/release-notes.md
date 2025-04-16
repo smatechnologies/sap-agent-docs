@@ -1,5 +1,13 @@
 # Release notes
 
+## SAP Agent 21.0.0
+
+2025 April
+
+:white_check_mark: **SAP-122**: Modified Agent to use SAP connection information from its configuration file including the XBP Interface Version while making interactive queries. 
+
+:white_check_mark: **SAP-123**: Fixed agent code to handle RfcTypeConversionException gracefully without getting stuck in a loop. Updated Agent to use latest SAP connector libraries.
+
 ## SAP Agent 20.2.0
 
 2022 June
