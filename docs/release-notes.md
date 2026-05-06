@@ -1,20 +1,34 @@
-# Release notes
+---
+sidebar_label: 'Release notes'
+title: SAP Agent release notes
+description: "Version history and change details for the SAP Agent, including new features, improvements, and bug fixes."
+tags:
+  - Reference
+  - System Administrator
+  - Agents
+---
 
-## SAP Agent 21.0.0
+# SAP Agent release notes
+
+## 21
+
+### 21.0.0
 
 2025 April
 
-:white_check_mark: **SAP-122**: Modified Agent to use SAP connection information from its configuration file including the XBP Interface Version while making interactive queries. 
+:white_check_mark: **SAP-122**: Modified Agent to use SAP connection information from its configuration file including the XBP Interface Version while making interactive queries.
 
 :white_check_mark: **SAP-123**: Fixed agent code to handle RfcTypeConversionException gracefully without getting stuck in a loop. Updated Agent to use latest SAP connector libraries.
 
-## SAP Agent 20.2.0
+## 20
+
+### 20.2.0
 
 2022 June
 
 :white_check_mark: **SAP-121**: Fixed an issue where an upgrade of the SAP system to version 2021+ required new versions of the libraries to connect to the system from the agent.
 
-## SAP Agent 20.1.0
+### 20.1.0
 
 2021 January
 
@@ -24,7 +38,7 @@
 
 :white_check_mark: **SAP-68**: Now prevents the SAP agent from logging incorrect configuration information.
 
-## SAP Agent 20.0.0
+### 20.0.0
 
 2020 September
 
@@ -34,7 +48,9 @@
 
 :white_check_mark: Fixed an issue where the SAP system name allowed was only "SAPSYSTEM", instead of any user defined name in the SAP config file.
 
-## SAP Agent 19.1.0
+## 19
+
+### 19.1.0
 
 2019 December
 
@@ -44,7 +60,9 @@
 You will need to upgrade to the latest version of the SAP LSAM to continue using this functionality.
 :::
 
-## SAP Agent 18.3.0
+## 18
+
+### 18.3.0
 
 2018 November
 
@@ -52,19 +70,13 @@ You will need to upgrade to the latest version of the SAP LSAM to continue using
 
 :eight_spoked_asterisk: Added the ability to retrieve SAP Job Spools in the Enterprise Manager.
 
-## Older versions
-
-<details>
-<summary>See all</summary>
-<br />
-
-#### SAP Agent 18.1.1
+### 18.1.1
 
 2018 June
 
 :white_check_mark: Fixed an issue where SAP job track/queue functionality did not work with certification changes.
 
-#### SAP Agent 18.0.0
+### 18.0.0
 
 :eight_spoked_asterisk: OpCon 18.0.0 has been certified by SAP with all of the latest requirements using all new SAP APIs.
 
@@ -80,7 +92,9 @@ You will need to upgrade to the latest version of the SAP LSAM to continue using
 - Supports SAP Event Driven Automation which maps OpCon Event(s) to run when specific SAP Event(s) run.
 - Reads application log content and reads the application return code.
 
-#### SAP Agent 17.1.0
+## 17
+
+### 17.1.0
 
 2017 September
 
@@ -90,7 +104,9 @@ You will need to upgrade to the latest version of the SAP LSAM to continue using
 This same fix was delivered in the **17.0.2** and **16.2.7** versions.
 :::
 
-#### SAP Agent 16.2.1
+## 16
+
+### 16.2.1
 
 2017 April
 
@@ -98,7 +114,7 @@ This same fix was delivered in the **17.0.2** and **16.2.7** versions.
 
 :white_check_mark: Fixed an issue where the LSAM went into a loop upon encountering an RfcAbapRuntimeException and the SAP jobs in OpCon stayed in a start attempted state.
 
-#### SAP Agent 16.2.0
+### 16.2.0
 
 2016 December
 
@@ -108,7 +124,7 @@ This same fix was delivered in the **17.0.2** and **16.2.7** versions.
 
 :white_check_mark: Fixed an issue where the MaxSpoolSizeToRetrieve configuration setting was applied to both job logs and spools.
 
-#### SAP Agent 16.1.0
+### 16.1.0
 
 2016 September
 
@@ -117,5 +133,3 @@ This same fix was delivered in the **17.0.2** and **16.2.7** versions.
 :eight_spoked_asterisk: Updated the SAP LSAM definition to handle up to 500 steps per job.
 
 :eight_spoked_asterisk: Added support for the LSAM to connect to SAP using the R3Name and Group from the Advanced Machine Properties in the Enterprise Manager to make use of load balancing servers in SAP.
-
-</details>

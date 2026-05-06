@@ -5,10 +5,15 @@ module.exports = {
   url: 'https://help.smatechnologies.com',
   baseUrl: '/opcon/agents/sap/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'smatechnologies',
   projectName: 'sap-agent-docs',
+  markdown: {
+    format: 'detect',
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   themeConfig: {
     navbar: {
       title: 'Help',
@@ -16,6 +21,11 @@ module.exports = {
         alt: 'SMA Technologies Help Logo',
         src: 'img/logo.svg',
         href: 'https://help.smatechnologies.com',
+      },
+    },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
       },
     },
     footer: {
@@ -28,7 +38,7 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          breadcrumbs: false,
+          breadcrumbs: true,
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
@@ -45,9 +55,9 @@ module.exports = {
   ],
   plugins: [
     [
-      require.resolve('@cmfcmf/docusaurus-search-local'), 
+      require.resolve('@cmfcmf/docusaurus-search-local'),
       {
-      
+
       }
     ],
   ],
