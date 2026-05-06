@@ -1,182 +1,297 @@
 ---
 sidebar_label: 'Configuration file'
+title: SAPLSAM.ini configuration file
+description: "Reference for the SAP Agent configuration file (SAPLSAM.ini), including general, network, debug, SAP system, job tracking, and JORS settings."
+tags:
+  - Reference
+  - System Administrator
+  - Agents
 ---
 
 # SAPLSAM.ini configuration file
 
-The SAPLSAM.ini is the SAP LSAM configuration filename. The location of the SAPLSAM.ini file is in the <Configuration Directory\>\\SAP LSAM\\ directory.
+## What is it?
+
+SAPLSAM.ini is the configuration file the SAP Agent reads at startup and re-reads when changes are detected. It controls how the agent identifies itself as a Windows service, how it communicates with OpCon, how it connects to the SAP system, and how it handles job tracking, output retrieval, and logging.
+
+The file lives in the `<Configuration Directory>\SAP LSAM\` directory.
 
 :::note
 The Configuration Directory is based on where you installed your programs. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Concepts** online help.
 :::
 
-The following settings are critical to the operation of the LSAM with OpCon:
+## How to read this page
 
-- **MaximumNumberOfJobs**: This value determines the maximum number of jobs the LSAM is allowed to process concurrently.
-- **SocketNumberToSAM**: This value is used for communication between the LSAM and the SMANetCom; consequently, the value for this setting and the value for the Socket Number on the Machines screen in the Enterprise Manager (EM) must match.
-- **JORSSocket**: This value is used for communicating job output information with the Enterprise Manager (EM).
+Each section below documents one section of the SAPLSAM.ini file. Tables list every setting in that section with the same four-column reference layout.
 
-Modify the SAPLSAM.ini File
+### Column meanings
 
-1. Right-click on the **Start** button.
-2. Select **Explore** from the menu.
-3. Browse to <Configuration Directory\>\\**SAP LSAM**\\ for the desired SAP LSAM instance.
-4. Find the **SAPLSAM.ini** file.
-5. Right-click the file and select **Open With**.
-6. Select an ASCII text editor (e.g., Notepad) from the **Choose the program you want use** list box.
-7. In the text editor, make any necessary modifications to the .ini file. For complete information on the SAPLSAM.ini settings, refer to the related topics.
-8. Use menu path: **File \> Save**.
-9. **Close ☒** the text editor.
+| Column | What it means |
+|---|---|
+| **Default** | The value SAPLSAM.ini ships with. Blank means the value is empty by default. |
+| **Dynamic** | **Y** = the agent picks up a change without a restart. **N** = you must restart the SAP Agent service after changing this value. |
+| **Required** | **Y** = the setting must have a value for the agent to start or function. **N** = the setting is optional. |
+| **Description** | What the setting does and any constraints. |
 
-Encrypt the User for the SAP Account
+### Conventions
 
-1. Log in to the Enterprise Manager.
-2. Use menu path: **EnterpriseManager \> Password Update \> Password encryption tool**.
-3. *(Optional)* Mark the **Visible** check box to make the password characters visible in the Password encryption tool.
-4. In **Password** field, enter the password.
-5. Click **Encrypt**.
-6. To copy the encrypted password, click the **Copy to Clipboard** button.
-7. Open the **SAPLSAM.ini** file. Refer to the procedure [Modify the SAPLSAM.ini File](#Modify_the_SAPLSAM.ini_File) for  more information on opening the SAPLSAM.ini file.
-8. Locate **User** under the **SAP System** settings in the SAPLSAM.ini file in the Text editor.
-9. Delete the default value for the User name.
-10. Paste the encrypted code as the User name.
-    a.  Right-click and select **paste** **- or -**
-    b.  Press **CTRL+V**.
+- Section headings in SAPLSAM.ini are written `[Section Name]` in the file itself, but appear without brackets in this reference.
+- Alphabetic values in **TCP/IP Parameters** and **Debug Options** must be uppercase. The service does not start if they are lowercase.
+- See [Modify the SAPLSAM.ini file](#modify-the-saplsamini-file) before making any changes.
 
-Encrypt the Password for the SAP Account
+## Sections in SAPLSAM.ini
 
-1. Log in to the Enterprise Manager:
-2. Use menu path: **EnterpriseManager \> Password Update \> Password encryption tool**.
-3. *(Optional)* Mark the **Visible** check box to make the password characters visible in the Password encryption tool.
-4. In **Password** field, enter the password.
-5. Click **Encrypt**.
-6. To copy the encrypted password, click the **Copy to Clipboard** button.
-7. Open the **SAPLSAM.ini** file. Refer to the procedure [Modify the SAPLSAM.ini File](#Modify_the_SAPLSAM.ini_File) for more information on opening the SAPLSAM.ini file.
-8. Locate **Password** under the **SAP System** settings in the SAPLSAM.ini file in the Text editor.
-9. Delete the default value for the Password.
-10. Paste the encrypted code as the Password.
-    a.  Right-click and select **paste** **- or -**
-    b.  Press **CTRL+V**.
+| Section | Purpose |
+|---|---|
+| [General settings](#general-settings) | Service name, concurrency, polling, output retrieval limits |
+| [TCP/IP parameters](#tcpip-parameters) | Communication ports and IP allowlist for SMANetCom |
+| [Process creation parameters](#process-creation-parameters) | Whether and how the agent saves job output |
+| [Debug options](#debug-options) | Log size, archive retention, and trace levels |
+| [SAP system settings](#sap-system-settings) | Connection details, credentials, and XBP version |
+| [Job Track/Queue settings](#job-trackqueue-settings) | Definitions for tracking or queuing SAP-initiated jobs |
+| [JORS settings](#jors-settings) | Socket used by the JORS service to deliver output to the EM |
 
-## General settings
+## Critical settings to verify first
 
-The following table contains the basic settings for the SAP LSAM.
+Three settings must be correct before the SAP Agent can do useful work. Verify these first when troubleshooting a brand-new install or a service that won't start.
 
-|[General Settings]|Default|Dynamic|Required|Description|
-|--- |--- |--- |--- |--- |
-|DisplaySerivceName|SMA OpCon Agent for SAP|N|Y|The service name displayed in the Service Control Manager. The name must be unique for each SAP LSAM. Do not change this unless there are more than one LSAM on this physical machine.|
-|ShortServiceName|SMA_SAPLSAM|N|Y|The hidden, internal (i.e., registry) service name Windows refers to. The name must be unique for each SAP LSAM. Do not change this unless there is more than one LSAM on this physical machine.|
-|MaximumNumberOfJobs|10|N|Y|Defines the maximum number of jobs the LSAM can simultaneously manage. When setting the MaximumNumberOfJobs, consider the SAP LSAM machine's processor speed and memory (RAM) size. No jobs process when this setting is zero. Although the maximum value allowed is 500, typical customer usage ranges from 10 to 30 jobs.|
-|JobStatusCheckInterval|30|Y|Y|Defines the interval in seconds at which the SAP LSAM polls the SAP system for each job's status. Supported values range from 5 to 300.|
-|MaxSpoolSizeToRetrieve|1000000|Y|N|Defines the maximum size in bytes of the spoollist to retrieve from the SAP side when Version is set to 3.0 in the SAP Systems section of the configuration file. If a spoollist is larger than the specified size, it will not be retrieved and will not be available through View Job Output.|
-|MaxJobLogSizeToRetrieve|1000000|Y|N|Defines the maximum size in bytes of the joblog to retrieve from the SAP side. If a joblog is larger than the specified size, it will not be retrieved and will not be available through View Job Output.|
-|CaptureOutputBeforeJobFin|False|Y|N|When True, this configures the LSAM so that it sends back a final Job status to SAM as soon as job finishes on the SAP side. The LSAM later goes on to grab the joblog/spool files. The only drawback here is they cannot immediately do a View Job Output as soon as the job finishes because we might still be in the process of gathering logs. Valid values include True and False.|
-|BapiResponseTimeout|300|Y|Y|Defines the timeout value (in seconds) for any BAPI call made into the SAP system. If the API call does not respond with success or failure within this time, the connection to SAP host is considered dead and a new connection into the system is attempted. Supported values range from 180 to 600.|
-|ExternalEventUser|Blank|Y|Y|Defines the external event user.|
-|ExternalEventPassword|Blank|Y|Y|Defines the password for the external event.|
+| Setting | Section | Why it matters |
+|---|---|---|
+| **MaximumNumberOfJobs** | General settings | If set to `0`, no jobs run on this agent. |
+| **SocketNumberToSAM** | TCP/IP parameters | Must match the **Socket Number** on the OpCon machine record so SMANetCom can reach the agent. |
+| **JORSSocket** | JORS settings | Must match the **JORS Port Number** on the OpCon machine record so the EM can retrieve job output. |
 
-## TCP/IP parameters
+---
 
-The following table contains the network settings for the SAP LSAM.
+## Procedures
 
-:::warning
-Enter all alphabetic TCP/IP parameter values in uppercase. The SAP LSAM service does not start if the values are in lowercase.
+### Modify the SAPLSAM.ini file {#modify-the-saplsamini-file}
+
+To modify the SAPLSAM.ini file, complete the following steps:
+
+1. Right-click the **Start** button and select **Explore** from the menu.
+2. Browse to `<Configuration Directory>\SAP LSAM\` for the desired SAP Agent instance.
+3. Right-click the **SAPLSAM.ini** file and select **Open With**.
+4. Select an ASCII text editor (for example, Notepad) from the **Choose the program you want to use** list box.
+5. Edit the settings you need to change. For complete information on each setting, see the section reference tables below.
+6. Go to **File > Save**.
+7. Close the text editor.
+
+:::tip
+If you only changed dynamic settings (marked **Y** in the Dynamic column), the agent picks up the change automatically. If any non-dynamic setting changed, restart the SAP Agent service. See [Managing the SAP Agent](./manage-lsam.md).
 :::
 
-|[TCP/IP Parameters]|Default|Dynamic|Required|Description|
-|--- |--- |--- |--- |--- |
-|SocketNumberToSAM|14100|N|Y|Defines the socket number through which the LSAM and the SMANetCom communicate. This number must match the Machine's socket number defined in the OpCon Enterprise Manager. If there are multiple SAP LSAMs installed on one machine, each LSAM must have a unique value. For an up-to-date list of unused ports, please refer to the Internet Assigned Numbers Authority at www.iana.org.|
-|QueryListenerPort|14101|N|N|Defines the port on which the SAP LSAM listens for proxy requests. Note: Firewall settings will need to allow connections on this port on the SAP LSAM.|
-|AllowedIPAddress_1|ANY|Y|N|Determines if communication from the SMANetCom to the LSAM is restricted to one or more TCP/IP addresses. If ANY is specified, the LSAM accepts communication from any TCP/IP address. If a specific TCP/IP address is defined (e.g., 126.40.90.231), the LSAM only accepts communication from the specified address. The LSAM refuses a connection if communication is attempted from another address. This definition enhances communication security by refusing communications from other TCP/IP addresses. If multiple SAMs are on a network, this address ensures the LSAM is only accepting messages from the intended SMANetCom. This parameter is case-sensitive.|
-|AllowedIPAddress_2||Y|N|Same as Address_1 explanation.|
-|AllowedIPAddress_3||Y|N|Same as Address_1 explanation.|
-|AllowedIPAddress_4||Y|N|Same as Address_1 explanation.|
-|AllowedIPAddress_5||Y|N|Same as Address_1 explanation.|
+### Encrypt SAP credentials in SAPLSAM.ini
 
-## Process creation parameters
+The SAP **User** and **Password** values must be entered as encrypted strings in SAPLSAM.ini. Both values use the same encryption tool and the same procedure — only the target field in SAPLSAM.ini differs.
 
-The following table contains the process creation options for SAP chains.
+#### Generate an encrypted value
 
-|[Process Creation Options]|Default|Dynamic|Required|Description|
-|--- |--- |--- |--- |--- |
-|CaptureJobOutput|TRUE|Y|N|Enables/Disables the creation of job output files for each OpCon job. If set to TRUE, the LSAM saves the output from each started job in a subdirectory (under the MSLSAM directory) called JobOutput. The LSAM saves each job's output to unique files named with the following syntax:"*OpCon job name up to 12 chars*_*unique number*.TXT". View Job Output feature works only if this setting is TRUE.|
+To generate an encrypted value, complete the following steps:
 
-## Debug options
+1. Log on to the Enterprise Manager.
+2. Go to **Enterprise Manager > Password Update > Password encryption tool**.
+3. *(Optional)* Mark the **Visible** check box to show the password characters.
+4. In the **Password** field, enter the user name or password you want to encrypt.
+5. Select **Encrypt**.
+6. Select **Copy to Clipboard**.
 
-The following table contains the log and trace settings for troubleshooting the SAP LSAM.
+#### Paste the encrypted value into SAPLSAM.ini
+
+To paste the encrypted value into SAPLSAM.ini, complete the following steps:
+
+1. Open `SAPLSAM.ini` — see [Modify the SAPLSAM.ini file](#modify-the-saplsamini-file).
+2. Locate the target field under the **SAP System** section:
+
+   | Encrypting | Target field |
+   |---|---|
+   | The SAP login user name | **User** |
+   | The SAP login password | **Password** |
+3. Delete the existing value for the target field.
+4. Paste the encrypted value (right-click and select **Paste**, or press **CTRL+V**).
+5. Save and close the file.
+
+Repeat both procedures with each value (user, then password) you need to encrypt.
+
+---
+
+## Setting reference
+
+### General settings
+
+Basic identity, concurrency, polling, and output-size settings for the SAP Agent.
+
+| Setting | Default | Dynamic | Required | Description |
+|---|---|---|---|---|
+| **DisplayServiceName** | SMA OpCon Agent for SAP | N | Y | The service name displayed in the Service Control Manager. Must be unique per SAP Agent on the host. Do not change unless more than one agent is installed on the same machine. |
+| **ShortServiceName** | SMA_SAPLSAM | N | Y | The hidden internal (registry) service name Windows uses. Must be unique per SAP Agent on the host. Do not change unless more than one agent is installed on the same machine. |
+| **MaximumNumberOfJobs** | 10 | N | Y | Maximum number of jobs the SAP Agent can process concurrently. Consider the host's CPU and memory. `0` means no jobs run. Maximum is 500; typical range is 10 to 30. |
+| **JobStatusCheckInterval** | 30 | Y | Y | Seconds between SAP polls for each job's status. Valid range: 5 to 300. |
+| **MaxSpoolSizeToRetrieve** | 1000000 | Y | N | Maximum spoollist size in bytes to retrieve when **Version** is `3.0`. Spoollists larger than this are not retrieved and are not available through View Job Output. |
+| **MaxJobLogSizeToRetrieve** | 1000000 | Y | N | Maximum job log size in bytes to retrieve. Job logs larger than this are not retrieved and are not available through View Job Output. |
+| **CaptureOutputBeforeJobFin** | False | Y | N | When `True`, the agent reports final job status to SAM as soon as the SAP job finishes, then captures the joblog and spool. The trade-off: View Job Output may not be immediately available because the agent is still gathering logs. Valid values: `True`, `False`. |
+| **BapiResponseTimeout** | 300 | Y | Y | Seconds to wait for any BAPI call into the SAP system. If the call does not respond within this time, the connection is treated as dead and a new connection is attempted. Valid range: 180 to 600. |
+| **ExternalEventUser** | *(blank)* | Y | Y | The external event user. |
+| **ExternalEventPassword** | *(blank)* | Y | Y | The password for the external event user. |
+
+### TCP/IP parameters
+
+Communication ports and an optional IP allowlist for traffic from SMANetCom.
 
 :::warning
-Enter all alphabetic debug option parameter values in uppercase. The SAP LSAM services do not start if the values are in lowercase.
+Enter all alphabetic TCP/IP parameter values in uppercase. The SAP Agent service does not start if the values are in lowercase.
 :::
 
-|[Debug Options]|Default|Dynamic|Required|Description|
-|--- |--- |--- |--- |--- |
-|MaximumLogFileSize|150000|Y|N|Sets the maximum size in bytes for each LSAM log file. Prevents the accumulation of log messages in a single file. This is a site-specific setting.|
-|ArchiveDaystoKeep|10|Y|N|Determine how many archive folders should be retained. Each time it archives a log, the SAP LSAM checks for expired archive folders to delete.|
-|TraceSAMMessages|ON|N|N|Enables/Disables tracing of messages to and from SMANetCom. The SAPLSAMTrace.log file contains the trace messages. If ON, the LSAM traces messages. If OFF, the LSAM does not trace messages.|
-|TraceLevel|0|Y|N|Enables/Disables tracing of any debug messages created by the LSAM. The SAPBWLSAM.log file contains the traced messages. If 0, only the LSAM failure debug messages are traced (minimal log). If 1, additional LSAM debug messages are traced. If 2, detailed LSAM debug messages are traced.|
+| Setting | Default | Dynamic | Required | Description |
+|---|---|---|---|---|
+| **SocketNumberToSAM** | 14100 | N | Y | The socket the SAP Agent and SMANetCom communicate on. Must match the **Socket Number** on the OpCon machine record. Each agent on the same host must have a unique value. For unused-port guidance, see the [Internet Assigned Numbers Authority](https://www.iana.org/). |
+| **QueryListenerPort** | 14101 | N | N | The port the SAP Agent listens on for proxy requests. Open this port in the host firewall. |
+| **AllowedIPAddress_1** | ANY | Y | N | Restricts SMANetCom traffic to one or more TCP/IP addresses. `ANY` accepts traffic from any source. A specific address (for example, `126.40.90.231`) restricts traffic to that source. The agent rejects connections from any other address. Useful when multiple SAMs share a network. Case-sensitive. |
+| **AllowedIPAddress_2** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
+| **AllowedIPAddress_3** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
+| **AllowedIPAddress_4** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
+| **AllowedIPAddress_5** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
 
-## SAP system settings
+### Process creation parameters
 
-The following table contains the LSAM connection information to the SAP system.
+Process creation options for SAP chains.
 
-|[SAP System]|Default|Dynamic|Required|Description|
-|--- |--- |--- |--- |--- |
-|Name|SAPSYSTEM|N|Y|The name of the SAP machine as defined in the OpCon Enterprise Manager (EM).|
-|ClientID|0|N|Y|The Client ID for connecting to the SAP System. Valid values are three-digit numbers ranging from 000 to 999.|
-|Gateway|/H/127.0.0.1/H/test801|N|Y|Defines the full connection string for SAP system. If connecting to an SAP machine within a network, a standard TCP/IP address is acceptable. If connecting through an ISDN line or some other mechanism, a complete router connection string is required. The following is a router connection string: /H/127.0.0.1/H/cpce801. cpce801 is the SAP machine name. 127.0.0.1 is the TCP/IP address of the SAP machine.|
-|SystemNumber|0|N|Y|The System number for connecting to SAP system. Valid values are two-digit numbers ranging from 00 to 99.|
-|R3Name||N|N|When an MSHOST is defined for the Gateway setting, the value for the R3Name is required to define the SAP R/3 instance name.|
-|Group||N|N|Optionally defines the name of the SAP server group for a load balancing connection when an MSHOST is defined for the Gateway setting.|
-|RFCTrace|0|N|Y|Enables/Disables SAP RFC tracing. If 0, SAP RFC tracing does not occur. If 1, SAP RFC tracing occurs.|
-|User||N|Y|Sets the User for connecting to the SAP system. The LSAM requires a user with the S_XMI_ALL privilege. To encrypt the User name, follow the procedure in Encrypt the User for the SAP Account.|
-|Password||N|Y|Sets the password for the User connecting to the SAP system. To encrypt the Password, follow the procedure in Encrypt the Password for the SAP Account.|
-|Version|3.0|N|N|Describes the version of XBP interface used for interacting with the SAP system. Valid values are 2.0 or 3.0.|
+| Setting | Default | Dynamic | Required | Description |
+|---|---|---|---|---|
+| **CaptureJobOutput** | TRUE | Y | N | When `TRUE`, the agent saves output from each started job in the `JobOutput` subdirectory under MSLSAM. Files are named `<OpCon job name (≤12 chars)>_<unique number>.TXT`. View Job Output works only when this is `TRUE`. |
 
-## Job Track/Queue settings
+### Debug options
 
-The following table contains the settings for tracking jobs started outside OpCon on the SAP system.
+Log size, archive retention, and trace verbosity for troubleshooting.
 
-Multiple jobs can be defined for tracking or queuing by creating groups of "Track" and "Queue" entries and changing the suffix (1) to a new unique value within each group (e.g., TrackFrequencyName2, QueueFrequencyName1, etc.).
+:::warning
+Enter all alphabetic debug option parameter values in uppercase. The SAP Agent services do not start if the values are in lowercase.
+:::
 
-In order for job tracking or queuing to work, please configure and activate a job intercept profile in SAP to match the Job Track/Queue configuration in the SAPLsam.ini file and run INITXBP2 on the SAP system; make sure Interception 3.0 is activated. The following images provide an example of setting up this process.
+| Setting | Default | Dynamic | Required | Description |
+|---|---|---|---|---|
+| **MaximumLogFileSize** | 150000 | Y | N | Maximum size in bytes per agent log file. Forces rotation so a single file does not grow unbounded. Site-specific. |
+| **ArchiveDaystoKeep** | 10 | Y | N | How many archive folders to retain. The agent purges expired folders during each archive. |
+| **TraceSAMMessages** | ON | N | N | Enables tracing of messages between the agent and SMANetCom into `SAPLSAMTrace.log`. Valid values: `ON`, `OFF`. |
+| **TraceLevel** | 0 | Y | N | Verbosity of debug messages written to `SAPBWLSAM.log`. `0` = failures only (minimal). `1` = additional debug. `2` = detailed debug. |
 
-### Initialization Program for Background Processing Interface XBP 2.0
+### SAP system settings
+
+Connection details, credentials, and XBP version for the SAP system the agent talks to.
+
+| Setting | Default | Dynamic | Required | Description |
+|---|---|---|---|---|
+| **Name** | SAPSYSTEM | N | Y | The name of the SAP machine as defined in the OpCon Enterprise Manager (EM). |
+| **ClientID** | 0 | N | Y | Client ID for the SAP system connection. Valid values: three-digit numbers `000` to `999`. |
+| **Gateway** | /H/127.0.0.1/H/test801 | N | Y | The full SAP connection string. A standard TCP/IP address works for SAP machines on a network. ISDN or other links require a router connection string (for example, `/H/127.0.0.1/H/cpce801`, where `cpce801` is the SAP machine name and `127.0.0.1` is its IP address). |
+| **SystemNumber** | 0 | N | Y | The system number for the SAP system connection. Valid values: two-digit numbers `00` to `99`. |
+| **R3Name** | *(blank)* | N | N | When **Gateway** uses an MSHOST, this defines the SAP R/3 instance name. |
+| **Group** | *(blank)* | N | N | When **Gateway** uses an MSHOST, this optionally defines the SAP server group for a load-balancing connection. |
+| **RFCTrace** | 0 | N | Y | Enables SAP RFC tracing. `0` = off. `1` = on. |
+| **User** | *(blank)* | N | Y | The SAP user the agent connects as. Must hold the S_XMI_ALL privilege. Encrypt this value — see [Encrypt SAP credentials in SAPLSAM.ini](#encrypt-sap-credentials-in-saplsamini). |
+| **Password** | *(blank)* | N | Y | The password for the SAP user. Encrypt this value — see [Encrypt SAP credentials in SAPLSAM.ini](#encrypt-sap-credentials-in-saplsamini). |
+| **Version** | 3.0 | N | N | XBP interface version. Valid values: `2.0`, `3.0`. |
+
+### Job Track/Queue settings
+
+Definitions for tracking or queuing SAP jobs that are submitted outside OpCon. For background on the feature, see [Managing external jobs](../advanced-features/external-jobs.md).
+
+#### Prerequisites in SAP
+
+For job tracking or queuing to work:
+
+1. Configure and activate a job intercept profile in SAP that matches the Job Track/Queue configuration in SAPLSAM.ini.
+2. Run INITXBP2 on the SAP system.
+3. Confirm Interception 3.0 is activated.
+
+The screenshots below show one example of setting this up.
+
+##### Initialization Program for Background Processing Interface XBP 2.0
 
 ![Initialization Program for Background Processing Interface XBP 2.0](../static/img/Initialization-Program-for-Background-Processing-Interface-XBP-2.0.jpg "Initialization Program for Background Processing Interface XBP 2.0")
 
-### Criteria Manager
+##### Criteria Manager
 
 ![Criteria Manager](../static/img/Criteria-Manager.jpg "Criteria Manager")
 
-### SAPLsam.ini Settings
+##### SAPLsam.ini Settings
 
 ![SAPLsam.ini Settings](../static/img/SAPLsam.ini-Settings.png "SAPLsam.ini Settings")
 
-+|[Job Track/Queue Settings]|Default|Dynamic|Required|Description|
-|--- |--- |--- |--- |--- |
-|JobTrackCheckInterval|30|Y|N|This defines the frequency in seconds for checking tracked/queued jobs on the SAP system. Define this option only one time in the Job Track/Queue Settings section.|
-|TrackFrequencyName1||Y|N|Defines the frequency name configured in OpCon for this tracked job.|
-|TrackOpconSkdName1||Y|N|Defines the schedule name as configured in OpCon for this tracked job.|
-|TrackOpconJobName1||Y|N|Defines the job name as configured in OpCon for this tracked job.|
-|TrackClientId1||Y|N|Defines the client id under which the tracked job starts on the R/3 or CRM system.|
-|TrackJobName1||Y|N|Defines the job name defined in the R/3 or CRM system for the tracked job. Wildcards \* and ? can be used while defining this field.|
-|TrackJobCreator1||Y|N|Defines the job creator defined for the tracked job in the R/3 or CRM system. Wildcards \* and ? can be used while defining this field.|
-|QueueFrequencyName1||Y|N|Defines the frequency name configured in OpCon for this queued job.|
-|QueueOpconSkdName1||Y|N|Defines the schedule name as configured in OpCon for this queued job.|
-|QueueOpconJobName1||Y|N|Defines the job name as configured in OpCon for this queued job.|
-|QueueClientId1||Y|N|Defines the client id under which the queued job starts on the R/3 or CRM system.|
-|QueueJobName1||Y|N|Defines the job name defined in the R/3 or CRM system for the queued job. Wildcards \* and ? can be used while defining this field.|
-|QueueJobCreator1||Y|N|Defines the job creator defined for the queued job in the R/3 or CRM system. Wildcards \* and ? can be used while defining this field.|
+#### Defining multiple jobs to track or queue
 
-## JORS settings
+Multiple jobs can be defined for tracking or queuing by creating groups of `Track` or `Queue` entries and changing the suffix `1` to a new unique value within each group (for example, `TrackFrequencyName2`, `QueueFrequencyName1`).
 
-The following table contains the network settings for the SAP JORS component.
+#### Settings reference
 
-| [JORS Settings] | Default | Dynamic | Required | Description |
-|---|---|---|---|---|---|
-| JORSSocket | 14110 | N | Y | Defines the socket number used for communicating job output information with the Enterprise Manager (EM). This number must match the Machine's JORS Port Number defined in the OpCon Enterprise Manager. If there are multiple SAP LSAMs installed on one machine, each LSAM requires a unique JORS socket number.
+The settings split into a single shared poll interval and matched **Track** / **Queue** group definitions. Define **JobTrackCheckInterval** once for the whole section.
+
+| Setting | Default | Dynamic | Required | Description |
+|---|---|---|---|---|
+| **JobTrackCheckInterval** | 30 | Y | N | Seconds between checks for tracked or queued jobs on the SAP system. Define this only once in the Job Track/Queue Settings section. |
+
+The remaining settings come in two parallel sets — **Track** definitions and **Queue** definitions — that share the same fields. Define one set per SAP job you want to track or queue.
+
+| Track setting | Queue setting | Description |
+|---|---|---|
+| **TrackFrequencyName1** | **QueueFrequencyName1** | The frequency name configured in OpCon for this job. *(Dynamic: Y, Required: N)* |
+| **TrackOpconSkdName1** | **QueueOpconSkdName1** | The schedule name configured in OpCon for this job. *(Dynamic: Y, Required: N)* |
+| **TrackOpconJobName1** | **QueueOpconJobName1** | The job name configured in OpCon for this job. *(Dynamic: Y, Required: N)* |
+| **TrackClientId1** | **QueueClientId1** | The client id under which the job starts on the R/3 or CRM system. *(Dynamic: Y, Required: N)* |
+| **TrackJobName1** | **QueueJobName1** | The job name in the R/3 or CRM system. Wildcards `*` and `?` are supported. *(Dynamic: Y, Required: N)* |
+| **TrackJobCreator1** | **QueueJobCreator1** | The job creator in the R/3 or CRM system. Wildcards `*` and `?` are supported. *(Dynamic: Y, Required: N)* |
+
+### JORS settings
+
+The single setting that controls the JORS service's listening port.
+
+| Setting | Default | Dynamic | Required | Description |
+|---|---|---|---|---|
+| **JORSSocket** | 14110 | N | Y | The socket the JORS service uses to deliver job output to the Enterprise Manager (EM). Must match the **JORS Port Number** on the OpCon machine record. Each agent on the same host requires a unique value. |
 
 :::note
-The JORSSocket needs to be set in both the LSAM ini file and the advanced machine settings in the EM. For more information on modifying the JORSSocket number, refer to the Configuring Advanced Machine Parameters and Properties in the Enterprise Manager online help.
+**JORSSocket** must be set in both the agent .ini file and the advanced machine settings in the EM. For more information on changing the JORS Port Number, see Configuring Advanced Machine Parameters and Properties in the Enterprise Manager online help.
 :::
+
+## FAQs
+
+**Which settings can I change without restarting the SAP Agent service?**
+Settings with **Y** in the Dynamic column. The agent re-reads SAPLSAM.ini when it detects a change. Settings with **N** require a service restart.
+
+**Why does the SAP Agent service fail to start after I edited SAPLSAM.ini?**
+Two common causes:
+- Alphabetic values in **TCP/IP Parameters** or **Debug Options** entered in lowercase. Both sections require uppercase.
+- A duplicate **ShortServiceName**, **DisplayServiceName**, **SocketNumberToSAM**, or **JORSSocket** when running multiple instances on the same host.
+
+**Why doesn't View Job Output show me a job's spool or job log?**
+Three things must be true:
+- **CaptureJobOutput** is `TRUE`.
+- The job log is smaller than **MaxJobLogSizeToRetrieve**.
+- The spool is smaller than **MaxSpoolSizeToRetrieve**.
+If any of these is not true, the relevant output is not retrieved.
+
+**What is the difference between SocketNumberToSAM and JORSSocket?**
+**SocketNumberToSAM** is the agent's main communication port with SMANetCom. **JORSSocket** is the port the JORS service uses to deliver logs and spool files to the Enterprise Manager. Each must match the corresponding setting on the OpCon machine record.
+
+**How do I encrypt the SAP user and password values?**
+Use the **Password encryption tool** in the Enterprise Manager. See [Encrypt SAP credentials in SAPLSAM.ini](#encrypt-sap-credentials-in-saplsamini).
+
+**Where do per-instance settings need to be unique on a multi-instance host?**
+**ShortServiceName**, **DisplayServiceName**, **SocketNumberToSAM**, and **JORSSocket** must each be unique per instance. See [Multiple instances](../installation/multiple-instances.md).
+
+**Can I match SAP-side job names with wildcards?**
+Yes. **TrackJobName1**, **TrackJobCreator1**, **QueueJobName1**, and **QueueJobCreator1** support `*` and `?` as wildcards.
+
+## Glossary
+
+**SAPLSAM.ini** — The configuration file for the SAP Agent. Located in `<Configuration Directory>\SAP LSAM\`.
+
+**SMANetCom** — The OpCon component that communicates with agents. The SAP Agent's **SocketNumberToSAM** must match the Machine's socket number in OpCon so SMANetCom can reach the agent.
+
+**JORS** — Job Output Retrieval System. The component that delivers SAP job logs and spool output to the Enterprise Manager.
+
+**XBP** — eXternal Background Processing. The SAP interface used to start, monitor, and intercept background jobs. The agent's **Version** setting selects XBP 2.0 or 3.0.
+
+**BAPI** — Business Application Programming Interface. SAP's API surface that the agent calls into. **BapiResponseTimeout** controls how long the agent waits before treating a BAPI call as failed.
+
+**Dynamic setting** — A setting that the SAP Agent picks up automatically when SAPLSAM.ini changes, without a service restart.
