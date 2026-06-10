@@ -57,7 +57,7 @@ The EM connects to the JORS service on the agent host. JORS, in turn, retrieves 
 For OpCon to connect to the JORS service, configure the **JORS Port Number** on the SAP machine record to match the agent's **JORSSocket** value.
 
 :::note Solution Manager
-If you use Solution Manager, go to **Library > Agents**, select the SAP agent, and set **JORS Port Number** on the **Communications Settings** tab. To stop or start communication, go to **Operations** and use the **Agents** section.
+The JORS Port Number must be configured in the Enterprise Manager (Advanced Machine Properties > **Communications Settings** tab). Solution Manager does not expose Advanced Machine Properties. To stop or start communication, use **Operations** and the **Agents** section in Solution Manager.
 :::
 
 The steps below describe the Enterprise Manager workflow.

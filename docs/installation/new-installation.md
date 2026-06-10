@@ -131,7 +131,7 @@ To change the **Log on as** account, complete the following steps:
 When a SAP Agent is installed, create a machine record in OpCon with a unique **Machine name** and **Socket number**. If the machine was previously defined in OpCon, skip this procedure.
 
 :::note Solution Manager
-If you use Solution Manager, go to **Library > Agents** and select **+ Add** to create the machine record. Set the **Socket Number** on the **General** tab. To start communication, go to **Operations** and use the **Agents** section.
+Machine records must be created in the Enterprise Manager. Solution Manager does not support adding agents. After the machine record is created and the agent is running, use **Operations** in Solution Manager to monitor agent status and manage communication.
 :::
 
 ### Log on to the Enterprise Manager

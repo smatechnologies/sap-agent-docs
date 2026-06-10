@@ -144,7 +144,7 @@ To register and start the new instance, complete the following steps:
 When a SAP Agent is installed, create a machine record with a unique **Machine name** and **Socket number** in OpCon. If the machine was previously defined in OpCon, skip this procedure.
 
 :::note Solution Manager
-If you use Solution Manager, go to **Library > Agents** and select **+ Add** to create the machine record. Set the **Socket Number** on the **General** tab.
+Machine records must be created in the Enterprise Manager. Solution Manager does not support adding agents. After the machine record is created and the agent is running, use **Operations** in Solution Manager to monitor agent status and manage communication.
 :::
 
 #### Log on to the Enterprise Manager
