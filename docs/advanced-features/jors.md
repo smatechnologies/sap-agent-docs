@@ -52,17 +52,23 @@ The EM connects to the JORS service on the agent host. JORS, in turn, retrieves 
 
 ## Procedures
 
-### Configure the JORS port in the EM
+### Configure the JORS port
 
-For the Enterprise Manager to connect to the JORS service, configure the **JORS Port Number** on the SAP machine record to match the agent's **JORSSocket** value.
+For OpCon to connect to the JORS service, configure the **JORS Port Number** on the SAP machine record to match the agent's **JORSSocket** value.
+
+:::note Solution Manager
+If you use Solution Manager, go to **Library > Agents**, select the SAP agent, and set **JORS Port Number** on the **Communications Settings** tab. To stop or start communication, go to **Operations** and use the **Agents** section.
+:::
+
+The steps below describe the Enterprise Manager workflow.
 
 #### Log on to the Enterprise Manager
 
 To log on to the Enterprise Manager, complete the following steps:
 
 1. Go to **Start > Programs > OpConxps > Enterprise Manager**.
-2. In the **Username** text box, enter a *case-sensitive User Login ID* (for example, `ocadm`).
-3. In the **Password** text box, enter the *case-sensitive password* for the user.
+2. In the **Username** field, enter a *case-sensitive User Login ID* (for example, `ocadm`).
+3. In the **Password** field, enter the *case-sensitive password* for the user.
 4. In the **Profile** list, select the *Profile*.
 5. Select **Login** to log on to the Enterprise Manager.
 
@@ -72,7 +78,7 @@ To stop communication, complete the following steps:
 
 1. Open **Machines** in the Navigation panel under **Administration**.
 2. In the **Select Machine** list, select the SAP Machine.
-3. Right-click over the graphic in the **Communication Status** frame to enable the menu.
+3. Right-click the graphic in the **Communication Status** frame to enable the menu.
 4. Select **Stop Communication** from the menu.
 
 #### Set the JORS Port Number
@@ -90,7 +96,7 @@ To set the JORS Port Number, complete the following steps:
 
 To restart communication, complete the following steps:
 
-1. Right-click over the graphic in the **Communication Status** frame to enable the menu.
+1. Right-click the graphic in the **Communication Status** frame to enable the menu.
 2. Select **Start Communication** from the menu.
 3. Close the **Machines** screen.
 

@@ -85,13 +85,17 @@ If you only changed dynamic settings (marked **Y** in the Dynamic column), the a
 
 The SAP **User** and **Password** values must be entered as encrypted strings in SAPLSAM.ini. Both values use the same encryption tool and the same procedure — only the target field in SAPLSAM.ini differs.
 
+:::note
+The **Password encryption tool** is available only in the Enterprise Manager. There is no equivalent tool in Solution Manager at this time.
+:::
+
 #### Generate an encrypted value
 
 To generate an encrypted value, complete the following steps:
 
 1. Log on to the Enterprise Manager.
 2. Go to **Enterprise Manager > Password Update > Password encryption tool**.
-3. *(Optional)* Mark the **Visible** check box to show the password characters.
+3. *(Optional)* Select the **Visible** option to show the password characters.
 4. In the **Password** field, enter the user name or password you want to encrypt.
 5. Select **Encrypt**.
 6. Select **Copy to Clipboard**.
@@ -130,7 +134,7 @@ Basic identity, concurrency, polling, and output-size settings for the SAP Agent
 | **MaxSpoolSizeToRetrieve** | 1000000 | Y | N | Maximum spoollist size in bytes to retrieve when **Version** is `3.0`. Spoollists larger than this are not retrieved and are not available through View Job Output. |
 | **MaxJobLogSizeToRetrieve** | 1000000 | Y | N | Maximum job log size in bytes to retrieve. Job logs larger than this are not retrieved and are not available through View Job Output. |
 | **CaptureOutputBeforeJobFin** | False | Y | N | When `True`, the agent reports final job status to SAM as soon as the SAP job finishes, then captures the joblog and spool. The trade-off: View Job Output may not be immediately available because the agent is still gathering logs. Valid values: `True`, `False`. |
-| **BapiResponseTimeout** | 300 | Y | Y | Seconds to wait for any BAPI call into the SAP system. If the call does not respond within this time, the connection is treated as dead and a new connection is attempted. Valid range: 180 to 600. |
+| **BapiResponseTimeout** | 300 | Y | Y | Seconds to wait for any BAPI call into the SAP system. If the call does not respond within this time, the connection is treated as dead and a new connection is attempted. Valid range: 30 to 600. |
 | **ExternalEventUser** | *(blank)* | Y | Y | The external event user. |
 | **ExternalEventPassword** | *(blank)* | Y | Y | The password for the external event user. |
 
@@ -144,8 +148,8 @@ Enter all alphabetic TCP/IP parameter values in uppercase. The SAP Agent service
 
 | Setting | Default | Dynamic | Required | Description |
 |---|---|---|---|---|
-| **SocketNumberToSAM** | 14100 | N | Y | The socket the SAP Agent and SMANetCom communicate on. Must match the **Socket Number** on the OpCon machine record. Each agent on the same host must have a unique value. For unused-port guidance, see the [Internet Assigned Numbers Authority](https://www.iana.org/). |
-| **QueryListenerPort** | 14101 | N | N | The port the SAP Agent listens on for proxy requests. Open this port in the host firewall. |
+| **SocketNumberToSAM** | 13100 | N | Y | The socket the SAP Agent and SMANetCom communicate on. Must match the **Socket Number** on the OpCon machine record. Each agent on the same host must have a unique value. For unused-port guidance, see the [Internet Assigned Numbers Authority](https://www.iana.org/). |
+| **QueryListenerPort** | 13101 | N | N | The port the SAP Agent listens on for proxy requests. Open this port in the host firewall. |
 | **AllowedIPAddress_1** | ANY | Y | N | Restricts SMANetCom traffic to one or more TCP/IP addresses. `ANY` accepts traffic from any source. A specific address (for example, `126.40.90.231`) restricts traffic to that source. The agent rejects connections from any other address. Useful when multiple SAMs share a network. Case-sensitive. |
 | **AllowedIPAddress_2** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
 | **AllowedIPAddress_3** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
@@ -228,7 +232,7 @@ The settings split into a single shared poll interval and matched **Track** / **
 
 | Setting | Default | Dynamic | Required | Description |
 |---|---|---|---|---|
-| **JobTrackCheckInterval** | 30 | Y | N | Seconds between checks for tracked or queued jobs on the SAP system. Define this only once in the Job Track/Queue Settings section. |
+| **JobTrackCheckInterval** | 300 | Y | N | Seconds between checks for tracked or queued jobs on the SAP system. Define this only once in the Job Track/Queue Settings section. |
 
 The remaining settings come in two parallel sets — **Track** definitions and **Queue** definitions — that share the same fields. Define one set per SAP job you want to track or queue.
 
@@ -247,7 +251,7 @@ The single setting that controls the JORS service's listening port.
 
 | Setting | Default | Dynamic | Required | Description |
 |---|---|---|---|---|
-| **JORSSocket** | 14110 | N | Y | The socket the JORS service uses to deliver job output to the Enterprise Manager (EM). Must match the **JORS Port Number** on the OpCon machine record. Each agent on the same host requires a unique value. |
+| **JORSSocket** | 13110 | N | Y | The socket the JORS service uses to deliver job output to the Enterprise Manager (EM). Must match the **JORS Port Number** on the OpCon machine record. Each agent on the same host requires a unique value. |
 
 :::note
 **JORSSocket** must be set in both the agent .ini file and the advanced machine settings in the EM. For more information on changing the JORS Port Number, see Configuring Advanced Machine Parameters and Properties in the Enterprise Manager online help.

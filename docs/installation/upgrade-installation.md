@@ -61,7 +61,7 @@ Before running the installer, drain SAP work from the agent and stop both servic
 
 To drain SAP work, complete the following steps:
 
-1. Open **Machines Status** under the **Operation** topic. The **Machines Status** screen displays.
+1. Open **Machines Status** under the **Operation** topic. The **Machines Status** screen displays. *(In Solution Manager, go to **Operations** and check the **Agents** section.)*
 2. Confirm **Running Jobs** is `0/<max>` for the SAP machine.
 3. If running jobs exist, contact the OpCon administrator to choose one of the following:
 
@@ -109,7 +109,7 @@ To remove the SAP Agent, complete the following steps:
    | # | Screen | What to do |
    |---|---|---|
    | 1 | Welcome | Select **Next**. |
-   | 2 | Program Maintenance | Select the **Remove** radio button. Select **Next**. |
+   | 2 | Program Maintenance | Select the **Remove** option. Select **Next**. |
    | 3 | Remove the Program | Select **Remove**. If the wizard prompts for a reboot, accept and restart when the wizard finishes. |
    | 4 | InstallShield Wizard Completed | Select **Finish**. |
 
@@ -203,7 +203,7 @@ To start communication, complete the following steps:
 To confirm the upgrade succeeded:
 
 1. In the Windows **Services** console, confirm both **SMA OpCon Agent for SAP** and **SMA OpCon JORS for SAP** are running.
-2. In the **Machines Status** view in the Enterprise Manager, confirm the SAP machine reports communication is up.
+2. In the **Machines Status** view in the Enterprise Manager (or the **Operations** view in Solution Manager), confirm the SAP machine reports communication is up.
 3. In the agent log (`SAPLSAM.log` under the Output Directory), confirm the agent connected to SAP and the version number matches the upgrade target. See [Logging](../advanced-features/logging.md) for log locations.
 4. Submit a low-impact test job to confirm end-to-end job execution.
 

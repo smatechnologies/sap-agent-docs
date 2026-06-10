@@ -130,13 +130,17 @@ To change the **Log on as** account, complete the following steps:
 
 When a SAP Agent is installed, create a machine record in OpCon with a unique **Machine name** and **Socket number**. If the machine was previously defined in OpCon, skip this procedure.
 
+:::note Solution Manager
+If you use Solution Manager, go to **Library > Agents** and select **+ Add** to create the machine record. Set the **Socket Number** on the **General** tab. To start communication, go to **Operations** and use the **Agents** section.
+:::
+
 ### Log on to the Enterprise Manager
 
 To log on to the Enterprise Manager, complete the following steps:
 
 1. Go to **Start > Programs > OpConxps > Enterprise Manager**. The **OpCon Login** screen displays.
-2. In the **Username** text box, enter a *case-sensitive User Login ID* (for example, `ocadm`).
-3. In the **Password** text box, enter the *case-sensitive password* for the user.
+2. In the **Username** field, enter a *case-sensitive User Login ID* (for example, `ocadm`).
+3. In the **Password** field, enter the *case-sensitive password* for the user.
 4. In the **Profile** list, select the *Profile*.
 5. Select **Login** to log on to the Enterprise Manager.
 
@@ -163,7 +167,7 @@ To add the SAP machine record, complete the following steps:
 
 To start communication with the machine, complete the following steps:
 
-1. Right-click over the graphic in the **Communication Status** frame to enable the menu.
+1. Right-click the graphic in the **Communication Status** frame to enable the menu.
 2. Select **Start Communication** from the menu.
 3. Close the **Machines** screen.
 
@@ -172,7 +176,7 @@ To start communication with the machine, complete the following steps:
 To confirm the install succeeded:
 
 1. In the Windows **Services** console, confirm both **SMA OpCon Agent for SAP** and **SMA OpCon JORS for SAP** are running. See [Managing the SAP Agent](../administration/manage-lsam.md) if either service is not started.
-2. In the **Machines Status** view in the Enterprise Manager, confirm the new SAP machine reports communication is up.
+2. In the **Machines Status** view in the Enterprise Manager (or the **Operations** view in Solution Manager), confirm the new SAP machine reports communication is up.
 3. In the agent log (`SAPLSAM.log` under the Output Directory), confirm the agent connected to SAP. See [Logging](../advanced-features/logging.md) for log locations.
 
 If any of the three checks fail, see the FAQs below or [Configuration file](../administration/configuration-file.md) to verify your SAPLSAM.ini settings.
@@ -180,7 +184,7 @@ If any of the three checks fail, see the FAQs below or [Configuration file](../a
 ## FAQs
 
 **Do I need to uninstall a previous version of the agent before running a new install?**
-No, unless you are upgrading from the 32-bit SAP LSAM and want to reuse the same install location. Otherwise, run an [upgrade installation](./upgrade-installation.md) instead.
+No, unless you are upgrading from the 32-bit version of the SAP Agent and want to reuse the same install location. Otherwise, run an [upgrade installation](./upgrade-installation.md) instead.
 
 **Where does the installer write its log?**
 `SMA_OpCon_SAP_LSAM_Install.log` in the Windows directory.
