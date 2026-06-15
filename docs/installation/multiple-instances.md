@@ -143,13 +143,17 @@ To register and start the new instance, complete the following steps:
 
 When a SAP Agent is installed, create a machine record with a unique **Machine name** and **Socket number** in OpCon. If the machine was previously defined in OpCon, skip this procedure.
 
+:::note Solution Manager
+Machine records must be created in the Enterprise Manager. Solution Manager does not support adding agents. After the machine record is created and the agent is running, use **Operations** in Solution Manager to monitor agent status and manage communication.
+:::
+
 #### Log on to the Enterprise Manager
 
 To log on to the Enterprise Manager, complete the following steps:
 
 1. Go to **Start > Programs > OpConxps > Enterprise Manager**. The **OpCon Login** screen displays.
-2. In the **Username** text box, enter a *case-sensitive User Login ID* (for example, `ocadm`).
-3. In the **Password** text box, enter the *case-sensitive password* for the user.
+2. In the **Username** field, enter a *case-sensitive User Login ID* (for example, `ocadm`).
+3. In the **Password** field, enter the *case-sensitive password* for the user.
 4. In the **Profile** list, select the *Profile*.
 5. Select **Login** to log on to the Enterprise Manager.
 
@@ -191,7 +195,7 @@ To configure the SAP Settings tab, complete the following steps:
 
 To start communication with the machine, complete the following steps:
 
-1. Right-click over the graphic to enable the menu in the **Communication Status** frame.
+1. Right-click the graphic in the **Communication Status** frame to enable the menu.
 2. Select **Start Communication** from the menu.
 3. Close the **Machines** screen.
 
@@ -311,7 +315,7 @@ After installing or upgrading multiple instances, verify each instance independe
 For every instance:
 
 1. In the Windows **Services** console, confirm the instance's two services (the agent and its JORS service) are running.
-2. In the **Machines Status** view in the Enterprise Manager, confirm the matching machine record reports communication is up.
+2. In the **Machines Status** view in the Enterprise Manager (or the **Operations** view in Solution Manager), confirm the matching machine record reports communication is up.
 3. In that instance's `SAPLSAM.log` (under its Output Directory), confirm it connected to the correct SAP system. See [Logging](../advanced-features/logging.md) for log locations.
 4. Submit a low-impact test job to the matching OpCon machine to confirm end-to-end execution on that instance.
 
