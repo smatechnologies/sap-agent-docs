@@ -168,7 +168,7 @@ The following table contains error numbers and descriptions of SAP BAPI Error Co
 No. They originate in SAP and are surfaced through the BAPI/XBP interface. The agent reports them in its logs but does not create them.
 
 **Where can I see one of these errors at runtime?**
-In the SAP Agent log files (`SAPLSAM.log` and `SAPLSAMTrace.log`). See [Logging](../advanced-features/logging.md) for log locations.
+In `SAPLSAM.log` and in the job's log, as `Bapi_Xbp_… returned <message number><message text>`. The SAP message number also appears in the job's machine message after the agent exit code. See [Logging](../advanced-features/logging.md) for log locations.
 
 ## Source
 

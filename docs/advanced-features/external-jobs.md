@@ -25,7 +25,7 @@ SAP user submits job ──► Agent intercepts (XBP profile) ──► Decision
                               ▼                                                               ▼
                           Tracked                                                         Queued
         Agent releases the job immediately +              Agent holds the job in Intercepted status +
-        sends $JOB:TRACK to SAM                           sends $JOB:QUEUE to SAM
+        sends $JOB:TRACK to SAM                           sends $JOB:QUEUED to SAM
                               │                                                               │
                               ▼                                                               ▼
                   SAM records the run                              SAM qualifies against OpCon dependencies
@@ -43,7 +43,7 @@ After SAM accepts the Track or Queue request, the job appears in Operations in t
 |---|---|---|
 | **What happens at submission** | Agent intercepts, then releases immediately to run | Agent intercepts and holds in **Intercepted** status |
 | **OpCon role** | Records the run for visibility | Qualifies the job against OpCon dependencies before release |
-| **Event sent to SAM** | `$JOB:TRACK` | `$JOB:QUEUE` |
+| **Event sent to SAM** | `$JOB:TRACK` | `$JOB:QUEUED` |
 | **Use when** | You want SAP-submitted jobs visible in OpCon Operations | You want SAP-submitted jobs to wait on OpCon time or dependency rules |
 
 ## Before you begin
@@ -97,7 +97,7 @@ To define an external job in Job Master, complete the following steps:
 
    | Field | Required | What to enter |
    |---|---|---|
-   | Name | Yes | The OpCon name for the job. Must match **TrackOpConJobName1** / **QueueOpConJobName1** in SAPLSAM.ini. |
+   | Name | Yes | The OpCon name for the job. Must match **TrackOpconJobName1** / **QueueOpconJobName1** in SAPLSAM.ini. |
    | Job Type | Yes | **SAP R/3 and CRM** |
    | Primary Machine | Yes | The OpCon machine record for the SAP system this job runs on. |
 5. On the toolbar, select **Save** to save the job definition.
@@ -124,7 +124,7 @@ To open SAPLSAM.ini, complete the following steps:
 2. Browse to `<Configuration Directory>\SAP LSAM\`.
 3. Right-click **SAPLSAM.ini** and select **Open With**.
 4. Select an *ASCII text editor* (for example, Notepad) from the **Choose the program you want to use** list box.
-5. Find the section titled `[Job Track/Queue Settings]`.
+5. Find the section titled `[JOB TRACK/QUEUE]`.
 
 #### Set the shared poll interval
 
@@ -138,16 +138,32 @@ The whole section shares a single polling interval. Set it once.
 
 A rule is a numbered group of six fields. The Track and Queue field sets are parallel — the description, matching behavior, and denial conditions are identical.
 
-For each SAP job to track or queue, set every field in the table below for that rule's number.
+For each SAP job to track or queue, set the fields in the table below for that rule's number.
+
+:::caution
+
+Field names are case-sensitive. Enter them exactly as shown — for example, `TrackOpconJobName1`, not `TrackOpConJobName1`. The agent ignores a field whose name does not match, and then discards the whole rule if a required field is missing. Each discarded rule is written to `SAPLSAM.log` as an "Invalid … specified, discarding" message.
+
+:::
 
 | Track field | Queue field | Required | Describes |
 |---|---|---|---|
 | **TrackFrequencyName1** | **QueueFrequencyName1** | No | The frequency name configured in OpCon for this job. |
-| **TrackOpConSkdName1** | **QueueOpConSkdName1** | No | The schedule name configured in OpCon for this job. |
-| **TrackOpConJobName1** | **QueueOpConJobName1** | Yes | The job name configured in OpCon. Must match the **Name** in Job Master. |
-| **TrackClientID1** | **QueueClientID1** | Yes | The client id under which the job starts on the R/3 or CRM system. |
-| **TrackJobName1** | **QueueJobName1** | Yes | The job name in the R/3 or CRM system. Wildcards `*` and `?` are supported. |
-| **TrackJobCreator1** | **QueueJobCreator1** | Yes | The job creator in the R/3 or CRM system. Wildcards `*` and `?` are supported. |
+| **TrackOpconSkdName1** | **QueueOpconSkdName1** | No | The schedule name configured in OpCon for this job. |
+| **TrackOpconJobName1** | **QueueOpconJobName1** | Yes | The job name configured in OpCon. Must match the **Name** in Job Master. |
+| **TrackClientId1** | **QueueClientId1** | Yes | The client id under which the job starts on the R/3 or CRM system. Matched as a regular expression. |
+| **TrackJobName1** | **QueueJobName1** | Yes | The job name in the R/3 or CRM system. Matched as a regular expression. |
+| **TrackJobCreator1** | **QueueJobCreator1** | Yes | The job creator in the R/3 or CRM system. Matched as a regular expression. |
+
+The agent compares the SAP job name, client, and job creator of each intercepted job with these values as regular expressions, not as `*` and `?` wildcards. Matching ignores case and finds the value anywhere in the SAP field. For example, `PAYROLL` also matches `PAYROLL_DAILY` and `XPAYROLL`. To match one name exactly, anchor it: `^PAYROLL$`. To match any value, use `.*`.
+
+:::warning
+
+Do not enter `*` on its own, or a value that starts with `*` or `?`. The agent cannot evaluate it: it logs an error and stops processing intercepted jobs for that check, so jobs that should be tracked or queued are not handled until you correct the entry.
+
+:::
+
+If an intercepted job matches both a Track rule and a Queue rule, the agent tracks it.
 
 #### When the agent denies a Track or Queue request
 
@@ -157,7 +173,7 @@ The agent denies the request and writes a message to its log under any of the co
 |---|---|
 | Frequency named in **TrackFrequencyName1** / **QueueFrequencyName1** does not exist for the OpCon job | Request denied. |
 | Frequency is not provided | SAM-SS uses the first defined frequency for the OpCon job. |
-| Schedule named in **TrackOpConSkdName1** / **QueueOpConSkdName1** is not in the Daily tables for the current date | Request denied. *(Exception: the AdHoc schedule is added automatically.)* |
+| Schedule named in **TrackOpconSkdName1** / **QueueOpconSkdName1** is not in the Daily tables for the current date | Request denied. *(Exception: the AdHoc schedule is added automatically.)* |
 | OpCon job name does not exist in Job Master | Request denied. |
 | Duplicate OpCon job already exists in Daily tables and the job name is **longer than 8 characters** | Request denied. |
 | Duplicate OpCon job already exists in Daily tables and the job name is **8 characters or fewer** | Job runs with `$nnn` suffix appended (for example, `TestJob$001`, `TestJob$002`). |
@@ -168,9 +184,9 @@ To define another job to track or queue, copy an existing six-field group and ch
 
 ```ini
 TrackFrequencyName2=...
-TrackOpConSkdName2=...
-TrackOpConJobName2=...
-TrackClientID2=...
+TrackOpconSkdName2=...
+TrackOpconJobName2=...
+TrackClientId2=...
 TrackJobName2=...
 TrackJobCreator2=...
 ```
@@ -181,7 +197,7 @@ Track and Queue numbers are independent — `Track1` and `Queue1` describe diffe
 
 To save and apply, complete the following steps:
 
-1. Go to **File > Save**.
+1. Go to **File** > **Save**.
 2. Close the text editor.
 
 The Job Track/Queue settings are dynamic — the agent picks up changes automatically without a service restart. See [Configuration file](../administration/configuration-file.md#job-trackqueue-settings).
@@ -195,7 +211,7 @@ SMA Technologies recommends adding jobs to be tracked to the AdHoc schedule for 
 | Auto-add to Daily tables | The AdHoc schedule is dynamically added to the Daily tables when SAM-SS is informed of a job on the schedule that is to be tracked. Other schedules must already be built. |
 | Open until midnight | Once active, the AdHoc schedule remains open until midnight and only closes when all of its jobs have finished. |
 
-If tracked jobs are on user-defined schedules, those schedules must be built and active in the Daily tables for the SAM-SS to track the jobs, and the schedule name must be specified in SAPLSAM.ini. With AdHoc, you can leave **TrackOpConSkdName** / **QueueOpConSkdName** blank.
+If tracked jobs are on user-defined schedules, those schedules must be built and active in the Daily tables for the SAM-SS to track the jobs, and the schedule name must be specified in SAPLSAM.ini. With AdHoc, you can leave **TrackOpconSkdName** / **QueueOpconSkdName** blank.
 
 ## Verify tracking or queuing
 
@@ -205,7 +221,7 @@ To confirm tracking or queuing is working end to end:
 2. In the Enterprise Manager **Operations** view, confirm the job appears under the OpCon schedule and job name configured for the rule.
 3. *(Tracked)* The job should briefly show **Intercepted** and then transition to a running state.
 4. *(Queued)* The job should remain in **Intercepted** until OpCon dependencies qualify it, then run.
-5. In the agent log (`SAPLSAM.log` under the Output Directory), confirm a `$JOB:TRACK` or `$JOB:QUEUE` event was sent and accepted by SAM.
+5. In the agent log (`SAPLSAM.log` under the Output Directory), confirm a `$JOB:TRACK` or `$JOB:QUEUED` event was sent and accepted by SAM.
 
 If the job did not appear, see the [When the agent denies a Track or Queue request](#when-the-agent-denies-a-track-or-queue-request) checklist or the FAQs below.
 
@@ -221,7 +237,7 @@ A job intercept profile must be configured and activated in SAP that matches the
 Use the [When the agent denies a Track or Queue request](#when-the-agent-denies-a-track-or-queue-request) checklist. The most common causes are a missing OpCon job in Job Master, a schedule that is not in the Daily tables, or a duplicate job name longer than 8 characters.
 
 **Why does SMA Technologies recommend the AdHoc schedule for tracked jobs?**
-The AdHoc schedule is added to the Daily tables automatically when SAM is informed of a job to track and stays open until midnight. Tracked jobs can land on it without requiring a pre-built schedule, and you can leave **TrackOpConSkdName** blank.
+The AdHoc schedule is added to the Daily tables automatically when SAM is informed of a job to track and stays open until midnight. Tracked jobs can land on it without requiring a pre-built schedule, and you can leave **TrackOpconSkdName** blank.
 
 **How do I track multiple jobs?**
 Create additional Track or Queue groups by copying an existing six-field group and changing the trailing number. See [Define additional rules](#define-additional-rules).
@@ -230,7 +246,7 @@ Create additional Track or Queue groups by copying an existing six-field group a
 A single SAP job is either tracked or queued by a given rule, not both. If you want different SAP submissions of the same job handled differently, define them as separate Track and Queue groups with non-overlapping match criteria.
 
 **Are wildcards supported in the SAP-side match fields?**
-Yes. **TrackJobName** / **QueueJobName** and **TrackJobCreator** / **QueueJobCreator** support `*` and `?` as wildcards.
+No. The client, job name, and job creator fields are regular expressions. Use `.*` to match any value and `^` and `$` to match a value exactly. See [Define a Track or Queue rule](#define-a-track-or-queue-rule).
 
 **Do I need to restart the SAP Agent after adding rules?**
 No. The Job Track/Queue settings are dynamic — the agent picks up changes automatically. See [Dynamic settings](../administration/configuration-file.md#how-to-read-this-page).

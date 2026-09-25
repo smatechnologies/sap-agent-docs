@@ -74,16 +74,16 @@ To modify the SAPLSAM.ini file, complete the following steps:
 3. Right-click the **SAPLSAM.ini** file and select **Open With**.
 4. Select an ASCII text editor (for example, Notepad) from the **Choose the program you want to use** list box.
 5. Edit the settings you need to change. For complete information on each setting, see the section reference tables below.
-6. Go to **File > Save**.
+6. Go to **File** > **Save**.
 7. Close the text editor.
 
 :::tip
 If you only changed dynamic settings (marked **Y** in the Dynamic column), the agent picks up the change automatically. If any non-dynamic setting changed, restart the SAP Agent service. See [Managing the SAP Agent](./manage-lsam.md).
 :::
 
-### Encrypt SAP credentials in SAPLSAM.ini
+### Encrypt credentials in SAPLSAM.ini {#encrypt-credentials-in-saplsamini}
 
-The SAP **User** and **Password** values must be entered as encrypted strings in SAPLSAM.ini. Both values use the same encryption tool and the same procedure — only the target field in SAPLSAM.ini differs.
+The SAP **User** and **Password** values, and the **ExternalEventUser** and **ExternalEventPassword** values, must be entered as encrypted strings in SAPLSAM.ini. All four use the same encryption tool and the same procedure — only the target field in SAPLSAM.ini differs.
 
 :::note
 The **Password encryption tool** is available only in the Enterprise Manager. There is no equivalent tool in Solution Manager at this time.
@@ -94,7 +94,7 @@ The **Password encryption tool** is available only in the Enterprise Manager. Th
 To generate an encrypted value, complete the following steps:
 
 1. Log on to the Enterprise Manager.
-2. Go to **Enterprise Manager > Password Update > Password encryption tool**.
+2. Go to **Enterprise Manager** > **Password Update** > **Password encryption tool**.
 3. *(Optional)* Select the **Visible** option to show the password characters.
 4. In the **Password** field, enter the user name or password you want to encrypt.
 5. Select **Encrypt**.
@@ -105,17 +105,19 @@ To generate an encrypted value, complete the following steps:
 To paste the encrypted value into SAPLSAM.ini, complete the following steps:
 
 1. Open `SAPLSAM.ini` — see [Modify the SAPLSAM.ini file](#modify-the-saplsamini-file).
-2. Locate the target field under the **SAP System** section:
+2. Locate the target field:
 
-   | Encrypting | Target field |
-   |---|---|
-   | The SAP login user name | **User** |
-   | The SAP login password | **Password** |
+   | Encrypting | Target field | Section |
+   |---|---|---|
+   | The SAP login user name | **User** | SAP System |
+   | The SAP login password | **Password** | SAP System |
+   | The external event user | **ExternalEventUser** | General Settings |
+   | The external event password | **ExternalEventPassword** | General Settings |
 3. Delete the existing value for the target field.
 4. Paste the encrypted value (right-click and select **Paste**, or press **CTRL+V**).
 5. Save and close the file.
 
-Repeat both procedures with each value (user, then password) you need to encrypt.
+Repeat both procedures for each value you need to encrypt.
 
 ---
 
@@ -129,14 +131,23 @@ Basic identity, concurrency, polling, and output-size settings for the SAP Agent
 |---|---|---|---|---|
 | **DisplayServiceName** | SMA OpCon Agent for SAP | N | Y | The service name displayed in the Service Control Manager. Must be unique per SAP Agent on the host. Do not change unless more than one agent is installed on the same machine. |
 | **ShortServiceName** | SMA_SAPLSAM | N | Y | The hidden internal (registry) service name Windows uses. Must be unique per SAP Agent on the host. Do not change unless more than one agent is installed on the same machine. |
-| **MaximumNumberOfJobs** | 10 | N | Y | Maximum number of jobs the SAP Agent can process concurrently. Consider the host's CPU and memory. `0` means no jobs run. Maximum is 500; typical range is 10 to 30. |
-| **JobStatusCheckInterval** | 30 | Y | Y | Seconds between SAP polls for each job's status. Valid range: 5 to 300. |
-| **MaxSpoolSizeToRetrieve** | 1000000 | Y | N | Maximum spoollist size in bytes to retrieve when **Version** is `3.0`. Spoollists larger than this are not retrieved and are not available through View Job Output. |
-| **MaxJobLogSizeToRetrieve** | 1000000 | Y | N | Maximum job log size in bytes to retrieve. Job logs larger than this are not retrieved and are not available through View Job Output. |
-| **CaptureOutputBeforeJobFin** | False | Y | N | When `True`, the agent reports final job status to SAM as soon as the SAP job finishes, then captures the joblog and spool. The trade-off: View Job Output may not be immediately available because the agent is still gathering logs. Valid values: `True`, `False`. |
-| **BapiResponseTimeout** | 300 | Y | Y | Seconds to wait for any BAPI call into the SAP system. If the call does not respond within this time, the connection is treated as dead and a new connection is attempted. Valid range: 30 to 600. |
-| **ExternalEventUser** | *(blank)* | Y | Y | The external event user. |
-| **ExternalEventPassword** | *(blank)* | Y | Y | The password for the external event user. |
+| **MaximumNumberOfJobs** | 10 | Y | Y | Maximum number of jobs the SAP Agent can process concurrently. Consider the host's CPU and memory. `0` means no jobs run. The agent does not enforce a maximum; typical range is 10 to 30. When the value changes, the agent sends the new limit to OpCon. |
+| **JobStatusCheckInterval** | 30 | N | Y | Seconds between SAP polls for each job's status. Supported range: 5 to 300. The agent does not enforce the range. |
+| **MaxSpoolSizeToRetrieve** | 1000000 | N | N | Maximum spoollist size in bytes to retrieve when **Version** is `3.0`. Spoollists larger than this are not retrieved and are not available through View Job Output. |
+| **MaxJobLogSizeToRetrieve** | 1000000 | N | N | Maximum job log size in bytes to retrieve. Job logs larger than this are not retrieved and are not available through View Job Output. |
+| **CaptureOutputBeforeJobFin** | False | N | N | When `True`, the agent reports final job status to SAM as soon as the SAP job finishes, then captures the joblog and spool. The trade-off: View Job Output may not be immediately available because the agent is still gathering logs. Valid values: `True`, `False`. |
+| **BapiResponseTimeout** | 300 | N | Y | Seconds to wait for any BAPI call into the SAP system. If the call does not respond within this time, the connection is treated as dead and a new connection is attempted. Valid range: 30 to 600. |
+| **ExternalEventUser** | *(blank)* | N | N | The OpCon user the agent sends external events as. Enter the value encrypted — see [Encrypt credentials in SAPLSAM.ini](#encrypt-credentials-in-saplsamini). The agent ignores a value it cannot decrypt, including a plain-text value. |
+| **ExternalEventPassword** | *(blank)* | N | N | The password for the external event user. Enter the value encrypted — see [Encrypt credentials in SAPLSAM.ini](#encrypt-credentials-in-saplsamini). The agent ignores a value it cannot decrypt, including a plain-text value. |
+| **JobCopyDelay** | 1 | N | N | Seconds the agent waits before copying an SAP job. Not in the shipped file; the agent uses `1` when it is absent or `0`. |
+| **JobStartDelay** | 1 | N | N | Seconds the agent waits before starting an SAP job. Not in the shipped file; the agent uses `1` when it is absent or `0`. |
+| **CaptureJobStatistics** | FALSE | N | N | When `TRUE`, the agent writes the SAP job's statistics and application information to the job log. Valid values: `TRUE`, `FALSE`. |
+
+:::caution
+
+The shipped SAPLSAM.ini spells this setting `CaputeJobStatistics`. The agent does not read that line. To turn job statistics on, add `CaptureJobStatistics=TRUE` to the General Settings section.
+
+:::
 
 ### TCP/IP parameters
 
@@ -150,7 +161,7 @@ Enter all alphabetic TCP/IP parameter values in uppercase. The SAP Agent service
 |---|---|---|---|---|
 | **SocketNumberToSAM** | 13100 | N | Y | The socket the SAP Agent and SMANetCom communicate on. Must match the **Socket Number** on the OpCon machine record. Each agent on the same host must have a unique value. For unused-port guidance, see the [Internet Assigned Numbers Authority](https://www.iana.org/). |
 | **QueryListenerPort** | 13101 | N | N | The port the SAP Agent listens on for proxy requests. Open this port in the host firewall. |
-| **AllowedIPAddress_1** | ANY | Y | N | Restricts SMANetCom traffic to one or more TCP/IP addresses. `ANY` accepts traffic from any source. A specific address (for example, `126.40.90.231`) restricts traffic to that source. The agent rejects connections from any other address. Useful when multiple SAMs share a network. Case-sensitive. |
+| **AllowedIPAddress_1** | ANY | Y | N | Restricts SMANetCom traffic to one or more TCP/IP addresses. `ANY` accepts traffic from any source. A specific address (for example, `192.0.2.10`) restricts traffic to that source. The agent rejects connections from any other address. Useful when multiple SAMs share a network. Case-sensitive. |
 | **AllowedIPAddress_2** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
 | **AllowedIPAddress_3** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
 | **AllowedIPAddress_4** | *(blank)* | Y | N | Same behavior as **AllowedIPAddress_1**. |
@@ -162,7 +173,7 @@ Process creation options for SAP chains.
 
 | Setting | Default | Dynamic | Required | Description |
 |---|---|---|---|---|
-| **CaptureJobOutput** | TRUE | Y | N | When `TRUE`, the agent saves output from each started job in the `JobOutput` subdirectory under MSLSAM. Files are named `<OpCon job name (≤12 chars)>_<unique number>.TXT`. View Job Output works only when this is `TRUE`. |
+| **CaptureJobOutput** | TRUE | Y | N | When `TRUE`, the agent saves each job's log and spool in the `JobOutput` folder beside its `Log` folder, as `<SAP job name>#<SAP job count>.log` and `.spool`, and moves them to `JobOutput\Archives\<date>` when the job ends. View Job Output works only when this is `TRUE`. |
 
 ### Debug options
 
@@ -175,9 +186,9 @@ Enter all alphabetic debug option parameter values in uppercase. The SAP Agent s
 | Setting | Default | Dynamic | Required | Description |
 |---|---|---|---|---|
 | **MaximumLogFileSize** | 150000 | Y | N | Maximum size in bytes per agent log file. Forces rotation so a single file does not grow unbounded. Site-specific. |
-| **ArchiveDaystoKeep** | 10 | Y | N | How many archive folders to retain. The agent purges expired folders during each archive. |
+| **ArchiveDaysToKeep** | 10 | Y | N | How many archive folders to retain. The agent purges expired folders during each archive. |
 | **TraceSAMMessages** | ON | N | N | Enables tracing of messages between the agent and SMANetCom into `SAPLSAMTrace.log`. Valid values: `ON`, `OFF`. |
-| **TraceLevel** | 0 | Y | N | Verbosity of debug messages written to `SAPBWLSAM.log`. `0` = failures only (minimal). `1` = additional debug. `2` = detailed debug. |
+| **TraceLevel** | 0 | Y | N | Verbosity of debug messages. `0` = failures only (minimal). `1` = additional debug. `2` = detailed debug. |
 
 ### SAP system settings
 
@@ -192,8 +203,8 @@ Connection details, credentials, and XBP version for the SAP system the agent ta
 | **R3Name** | *(blank)* | N | N | When **Gateway** uses an MSHOST, this defines the SAP R/3 instance name. |
 | **Group** | *(blank)* | N | N | When **Gateway** uses an MSHOST, this optionally defines the SAP server group for a load-balancing connection. |
 | **RFCTrace** | 0 | N | Y | Enables SAP RFC tracing. `0` = off. `1` = on. |
-| **User** | *(blank)* | N | Y | The SAP user the agent connects as. Must hold the S_XMI_ALL privilege. Encrypt this value — see [Encrypt SAP credentials in SAPLSAM.ini](#encrypt-sap-credentials-in-saplsamini). |
-| **Password** | *(blank)* | N | Y | The password for the SAP user. Encrypt this value — see [Encrypt SAP credentials in SAPLSAM.ini](#encrypt-sap-credentials-in-saplsamini). |
+| **User** | *(blank)* | N | Y | The SAP user the agent connects as. Must hold the S_XMI_ALL privilege. Encrypt this value — see [Encrypt credentials in SAPLSAM.ini](#encrypt-credentials-in-saplsamini). |
+| **Password** | *(blank)* | N | Y | The password for the SAP user. Encrypt this value — see [Encrypt credentials in SAPLSAM.ini](#encrypt-credentials-in-saplsamini). |
 | **Version** | 3.0 | N | N | XBP interface version. Valid values: `2.0`, `3.0`. |
 
 ### Job Track/Queue settings
@@ -242,8 +253,8 @@ The remaining settings come in two parallel sets — **Track** definitions and *
 | **TrackOpconSkdName1** | **QueueOpconSkdName1** | The schedule name configured in OpCon for this job. *(Dynamic: Y, Required: N)* |
 | **TrackOpconJobName1** | **QueueOpconJobName1** | The job name configured in OpCon for this job. *(Dynamic: Y, Required: N)* |
 | **TrackClientId1** | **QueueClientId1** | The client id under which the job starts on the R/3 or CRM system. *(Dynamic: Y, Required: N)* |
-| **TrackJobName1** | **QueueJobName1** | The job name in the R/3 or CRM system. Wildcards `*` and `?` are supported. *(Dynamic: Y, Required: N)* |
-| **TrackJobCreator1** | **QueueJobCreator1** | The job creator in the R/3 or CRM system. Wildcards `*` and `?` are supported. *(Dynamic: Y, Required: N)* |
+| **TrackJobName1** | **QueueJobName1** | The job name in the R/3 or CRM system. Matched as a regular expression — see [Managing external jobs](../advanced-features/external-jobs.md#define-a-track-or-queue-rule). *(Dynamic: Y, Required: N)* |
+| **TrackJobCreator1** | **QueueJobCreator1** | The job creator in the R/3 or CRM system. Matched as a regular expression — see [Managing external jobs](../advanced-features/external-jobs.md#define-a-track-or-queue-rule). *(Dynamic: Y, Required: N)* |
 
 ### JORS settings
 
@@ -278,13 +289,13 @@ If any of these is not true, the relevant output is not retrieved.
 **SocketNumberToSAM** is the agent's main communication port with SMANetCom. **JORSSocket** is the port the JORS service uses to deliver logs and spool files to the Enterprise Manager. Each must match the corresponding setting on the OpCon machine record.
 
 **How do I encrypt the SAP user and password values?**
-Use the **Password encryption tool** in the Enterprise Manager. See [Encrypt SAP credentials in SAPLSAM.ini](#encrypt-sap-credentials-in-saplsamini).
+Use the **Password encryption tool** in the Enterprise Manager. See [Encrypt credentials in SAPLSAM.ini](#encrypt-credentials-in-saplsamini).
 
 **Where do per-instance settings need to be unique on a multi-instance host?**
 **ShortServiceName**, **DisplayServiceName**, **SocketNumberToSAM**, and **JORSSocket** must each be unique per instance. See [Multiple instances](../installation/multiple-instances.md).
 
 **Can I match SAP-side job names with wildcards?**
-Yes. **TrackJobName1**, **TrackJobCreator1**, **QueueJobName1**, and **QueueJobCreator1** support `*` and `?` as wildcards.
+Not with `*` and `?` wildcards. **TrackJobName1**, **TrackJobCreator1**, **QueueJobName1**, and **QueueJobCreator1**, and the client fields, are matched as regular expressions. See [Managing external jobs](../advanced-features/external-jobs.md#define-a-track-or-queue-rule).
 
 ## Glossary
 

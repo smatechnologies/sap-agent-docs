@@ -81,9 +81,9 @@ To create the new instance directories, complete the following steps:
 
 1. On the application server, right-click the **Start** button and select **Explore**.
 2. Browse to the OpConxps `<Target Directory>` in the explorer window.
-3. Go to **File > New > Folder** and name it `SAP LSAM <custom directory>` (for example, `SAPLSAM13200`).
+3. Go to **File** > **New** > **Folder** and name it `SAP LSAM <custom directory>` (for example, `SAPLSAM13200`).
 4. Browse to the OpConxps `<Configuration Directory>`.
-5. Go to **File > New > Folder** and give it the same name as the program files directory (for example, `SAPLSAM13200`).
+5. Go to **File** > **New** > **Folder** and give it the same name as the program files directory (for example, `SAPLSAM13200`).
 
 ### Copy required files
 
@@ -95,7 +95,7 @@ To copy the required files, complete the following steps:
    |---|---|---|
    | 1 | First agent's `<Target Directory>` | New agent's `<Target Directory>` |
    | 2 | First agent's `<Configuration Directory>` | New agent's `<Configuration Directory>` |
-2. For each pair, use **Edit > Select All**, **Edit > Copy** in the source, then **Edit > Paste** in the destination.
+2. For each pair, use **Edit** > **Select All**, **Edit** > **Copy** in the source, then **Edit** > **Paste** in the destination.
 
 ### Modify the new agent's configuration file
 
@@ -115,7 +115,7 @@ To modify the configuration file, complete the following steps:
    | **SocketNumberToSAM** | TCP/IP Parameters | A unique port number. Must match the OpCon machine record's **Socket Number**. |
    | **JORSSocket** | JORS Settings | A unique port number. Must match the OpCon machine record's **JORS Port Number**. |
 5. Configure the connection information for the SAP system. See [SAP system settings](../administration/configuration-file.md#sap-system-settings).
-6. Go to **File > Save**.
+6. Go to **File** > **Save**.
 7. Close the **Explorer** window.
 
 ### Register the new agent as a service and start
@@ -132,11 +132,11 @@ To register and start the new instance, complete the following steps:
    regsvc.cmd -install
    ```
 4. Close the command window.
-5. Go to **Start > Administrative Tools > Server Manager**.
+5. Go to **Start** > **Administrative Tools** > **Server Manager**.
 6. Expand (**+**) the **Configuration** option in the Administrative Tools window.
 7. Select the **Services** entry.
 8. In the **Services** list, select the new instance's **DisplayServiceName**.
-9. Go to **Action > Start**.
+9. Go to **Action** > **Start**.
 10. Confirm the *Service's* **Status** is **Started**.
 
 ### Create the machine in OpCon (manual install)
@@ -151,7 +151,7 @@ Machine records must be created in the Enterprise Manager. Solution Manager does
 
 To log on to the Enterprise Manager, complete the following steps:
 
-1. Go to **Start > Programs > OpConxps > Enterprise Manager**. The **OpCon Login** screen displays.
+1. Go to **Start** > **Programs** > **OpConxps** > **Enterprise Manager**. The **OpCon Login** screen displays.
 2. In the **Username** field, enter a *case-sensitive User Login ID* (for example, `ocadm`).
 3. In the **Password** field, enter the *case-sensitive password* for the user.
 4. In the **Profile** list, select the *Profile*.
@@ -242,15 +242,15 @@ To drain SAP work, complete the following steps:
 
 To stop both services for this instance, complete the following steps:
 
-1. On the Application server, go to **Start > Administrative Tools > Server Manager**. The **Administrative Tools** window displays.
+1. On the Application server, go to **Start** > **Administrative Tools** > **Server Manager**. The **Administrative Tools** window displays.
 2. Expand (**+**) the **Configuration** option.
 3. Select the **Services** entry. The **Services** window displays.
 4. Stop each service in the order shown:
 
    | # | Service | Action |
    |---|---|---|
-   | 1 | This instance's **DisplayServiceName** *(agent)* | Select the service, then go to **Action > Stop**. Confirm **Status** is **Stopped**. |
-   | 2 | This instance's JORS service | Select the service, then go to **Action > Stop**. Confirm **Status** is **Stopped**. |
+   | 1 | This instance's **DisplayServiceName** *(agent)* | Select the service, then go to **Action** > **Stop**. Confirm **Status** is **Stopped**. |
+   | 2 | This instance's JORS service | Select the service, then go to **Action** > **Stop**. Confirm **Status** is **Stopped**. |
 5. Close the **Services** window.
 6. Repeat this procedure for each manually installed instance on the machine.
 
@@ -259,9 +259,9 @@ To stop both services for this instance, complete the following steps:
 To copy the upgrade files, complete the following steps:
 
 1. In the explorer window, browse to the first (already-upgraded) SAP Agent's directory.
-2. Go to **Edit > Select All**, then **Edit > Copy**.
+2. Go to **Edit** > **Select All**, then **Edit** > **Copy**.
 3. Browse to the additional SAP Agent directory.
-4. Go to **Edit > Paste**.
+4. Go to **Edit** > **Paste**.
 
 ### Confirm the additional agent's configuration settings
 
@@ -288,11 +288,11 @@ After merging settings, restart the service and tell OpCon to resume communicati
 
 To restart the service, complete the following steps:
 
-1. On the Application server, go to **Start > Administrative Tools > Server Manager**. The **Administrative Tools** window displays.
+1. On the Application server, go to **Start** > **Administrative Tools** > **Server Manager**. The **Administrative Tools** window displays.
 2. Expand (**+**) the **Configuration** option.
 3. Select the **Services** entry. The **Services** window displays.
 4. In the **Services** list, select this instance's **DisplayServiceName**.
-5. Go to **Action > Start**.
+5. Go to **Action** > **Start**.
 6. Confirm the *Service's* **Status** is **Started**.
 
 :::tip

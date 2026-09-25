@@ -36,9 +36,9 @@ A new installation puts the SAP Agent on a Windows host for the first time. This
 
 The OpCon installer is a standard InstallShield wizard. The first three steps below get you to the wizard; the table after lists every screen and what to do on each.
 
-### Launch the installer
+### Start the installer
 
-To launch the installer, complete the following steps:
+To start the installer, complete the following steps:
 
 1. Log on to the Windows machine as a Local Administrator.
 2. Exit all running applications on the desktop (including OpCon applications).
@@ -54,7 +54,7 @@ For each screen the wizard shows, take the action in the table below. Defaults a
 |---|---|---|
 | 1 | Choose Setup Language | Select the language and select **Next**. |
 | 2 | Welcome | Select **Next**. |
-| 3 | Select Components | Select **SMA OpCon Agents > SMA OpCon Agent for SAP**. Select **Install**. |
+| 3 | Select Components | Select **SMA OpCon Agents** > **SMA OpCon Agent for SAP**. Select **Install**. |
 | 4 | Welcome *(component installer)* | Select **Next**. |
 | 5 | Destination Folder | Change the target location or retain the default. Select **Next**. |
 | 6 | Configure Instance Name | *(Optional)* Enter a unique instance name. Select **Next**. |
@@ -92,11 +92,11 @@ SMA Technologies recommends keeping the SMA OpCon Agent for SAP service set to *
 
 To open the service properties, complete the following steps:
 
-1. On the Application server, go to **Start > Control Panel > Administrative Tools**.
+1. On the Application server, go to **Start** > **Control Panel** > **Administrative Tools**.
 2. Open the **Services** entry. The **Services** window displays.
-3. Open the newly installed **SMA OpCon Agent for SAP** service. The **SMA OpCon Agent for SAP Properties** dialog displays with the **General** tab in focus.
+3. Open the newly installed **SMA OpCon Agent for SAP** service. The **SMA OpCon Agent for SAP Properties** window displays with the **General** tab in focus.
 
-Leave this dialog open while you complete the procedures below.
+Leave this window open while you complete the procedures below.
 
 ### Change the startup type
 
@@ -138,7 +138,7 @@ Machine records must be created in the Enterprise Manager. Solution Manager does
 
 To log on to the Enterprise Manager, complete the following steps:
 
-1. Go to **Start > Programs > OpConxps > Enterprise Manager**. The **OpCon Login** screen displays.
+1. Go to **Start** > **Programs** > **OpConxps** > **Enterprise Manager**. The **OpCon Login** screen displays.
 2. In the **Username** field, enter a *case-sensitive User Login ID* (for example, `ocadm`).
 3. In the **Password** field, enter the *case-sensitive password* for the user.
 4. In the **Profile** list, select the *Profile*.
@@ -193,7 +193,7 @@ No, unless you are upgrading from the 32-bit version of the SAP Agent and want t
 Delayed Start avoids race conditions at boot time when other services and programs are still starting up.
 
 **Where do I configure the connection to SAP after the install completes?**
-Connection details live in `SAPLSAM.ini`. See the [Configuration file](../administration/configuration-file.md) reference and the [Encrypt SAP credentials](../administration/configuration-file.md#encrypt-sap-credentials-in-saplsamini) procedure.
+Connection details live in `SAPLSAM.ini`. See the [Configuration file](../administration/configuration-file.md) reference and the [Encrypt credentials in SAPLSAM.ini](../administration/configuration-file.md#encrypt-credentials-in-saplsamini) procedure.
 
 **Which port values does the installer ask for?**
 The **Configure Ports** screen sets the agent's main socket and the JORS socket. Defaults are safe for single-instance installs. For multiple agents on the same host, see [Multiple instances](./multiple-instances.md).
