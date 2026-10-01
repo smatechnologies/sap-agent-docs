@@ -17,10 +17,12 @@ The Job Output Retrieval System (JORS) lets operators open a SAP job's log and s
 ## How it works
 
 ```
-EM ──(JORS Port Number)──► JORS service ──► SAP Agent ──► SAP system (job log + spool)
+SAP Agent ──(captures job log + spool during the run, archives them at job end)──► JobOutput\Archives
+
+EM ──(JORS Port Number)──► JORS service ──► reads the archived files from JobOutput\Archives
 ```
 
-The EM connects to the JORS service on the agent host. JORS, in turn, retrieves the job log and spool file the agent captured during the job run and streams them back for display in the EM's Log Viewer.
+The EM connects to the JORS service on the agent host. JORS, in turn, retrieves the job log and spool file the agent captured during the job run and streams them back for display in the EM's Log Viewer. JORS does not connect to SAP. The files are available after the job ends and the agent has archived them.
 
 ## Components and matching ports
 
@@ -45,7 +47,7 @@ The EM connects to the JORS service on the agent host. JORS, in turn, retrieves 
 
 | Phase | What you do | Goes to |
 |---|---|---|
-| 1 | Set the **JORS Port Number** on the SAP machine record | [Configure the JORS port in the EM](#configure-the-jors-port-in-the-em) |
+| 1 | Set the **JORS Port Number** on the SAP machine record | [Configure the JORS port](#configure-the-jors-port) |
 | 2 | Confirm output retrieval works end to end | [View job output in the EM](#view-job-output-in-the-em) |
 
 ---
@@ -66,7 +68,7 @@ The steps below describe the Enterprise Manager workflow.
 
 To log on to the Enterprise Manager, complete the following steps:
 
-1. Go to **Start > Programs > OpConxps > Enterprise Manager**.
+1. Go to **Start** > **Programs** > **OpConxps** > **Enterprise Manager**.
 2. In the **Username** field, enter a *case-sensitive User Login ID* (for example, `ocadm`).
 3. In the **Password** field, enter the *case-sensitive password* for the user.
 4. In the **Profile** list, select the *Profile*.
