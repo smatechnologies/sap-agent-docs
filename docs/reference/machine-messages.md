@@ -16,17 +16,17 @@ A machine message is a short, 20-character status string the SAP Agent attaches 
 
 ## Where to find the message
 
-In the *Detailed Job Messages* parameter on the **Enterprise Manager > Operation > Job Information > Configuration > Operations Related Information** tab. The 20-character message also appears next to the OpCon Job Status in the Operation Daily List screen. For additional information, refer to [Job Information](https://help.smatechnologies.com/opcon/core/Files/UI/Enterprise-Manager/Job-Information) in the **Enterprise Manager** online help.
+In the *Detailed Job Messages* parameter on the **Enterprise Manager** > **Operation** > **Job Information** > **Configuration** > **Operations Related Information** tab. The 20-character message also appears next to the OpCon Job Status in the Operation Daily List screen. For additional information, refer to [Job Information](https://help.smatechnologies.com/opcon/core/Files/UI/Enterprise-Manager/Job-Information) in the **Enterprise Manager** online help.
 
 ## Message formats by job state
 
 | Job state | Format | Example |
 |---|---|---|
-| Running (no children) | SAP job number | `1234567` |
-| Running (with children) | `<Child Name> - <Current Status>` | `MYCHILDJOB - Actv` |
-| Finished OK | `0-<SAP job ID>` | `0-1234567` |
-| Failed (after job copy in SAP) | `<Agent Exit Code> - <SAP job number>` | `70010 - 1234567` |
-| Failed (before job copy) | `<Agent Exit Code> - <SAM job number>` | `70004 - 1234567` |
+| Running (no children) | `<SAP job count>:<SAP job status>` | `12345678:Active` |
+| Running (with children) | `<Child Name>:<Child status code>` | `MYCHILDJOB:Actv` |
+| Finished OK | `0 - <SAP job count>` | `0 - 12345678` |
+| Ended unsuccessfully in SAP (for example, cancelled) | `1 - <SAP job count>` | `1 - 12345678` |
+| Failed with an agent error | `<Agent Exit Code>-<SAP job count>`, or `<Agent Exit Code>-<SAM job ID>` when no SAP job count is available. The exit code includes the SAP message number when SAP returned one. | `70010:049-12345678` |
 
 For exit code meanings, see [Exit codes](./exit-codes.md).
 
@@ -43,6 +43,7 @@ When the running job has child jobs, the agent reports the current status using 
 | Fin | Finished |
 | Term | Terminated |
 | Rel | Released |
+| Invd | Does not exist |
 
 The Child Name shows up to 15 characters of the child job name. The complete child name and its current status are available in the Job Configuration screen.
 
@@ -52,10 +53,10 @@ The Child Name shows up to 15 characters of the child job name. The complete chi
 Next to the OpCon Job Status in the Operation Daily List screen, in the Detailed Job Messages parameter on the Job Information screen.
 
 **What does Int mean as a child job status?**
-Intercepted. The agent is holding the child job in SAP's intercepted state, typically as part of Track or Queue handling.
+Intercepted. SAP reports the child job in its intercepted state.
 
-**Why do some failure messages reference a SAM job number instead of an SAP job number?**
-If the agent failed before it could copy the SAP R/3 and CRM job into SAP for execution, no SAP job number exists yet. The message reports the SAM job number instead.
+**Why do some failure messages reference a SAM job ID instead of an SAP job count?**
+The agent reports the SAM job ID only when it has no SAP job count for the job — for example, when the job definition does not include one (exit code 70002).
 
 ## Glossary
 

@@ -41,7 +41,7 @@ This release restores compatibility with SAP systems upgraded to version 2021 or
 
 **2021 January**
 
-This release resolves two stability issues in the SAP Agent service.
+This release resolves three issues in the SAP Agent service.
 
 :white_check_mark: **Log access timeout resolved** Fixed an issue where the logging component sometimes timed out waiting to gain access to the log, causing the SAP Agent to stop responding.
 
@@ -53,7 +53,7 @@ This release resolves two stability issues in the SAP Agent service.
 
 **2020 September**
 
-This release improves job reporting performance and corrects two output-retrieval defects.
+This release improves job reporting performance, corrects job output retrieval for failed steps, and allows any SAP system name.
 
 :white_check_mark: **Job completion reporting delay under load resolved** Fixed a performance issue where under significant load, jobs took much longer to report as finished on the OpCon side.
 
@@ -69,10 +69,10 @@ This release improves job reporting performance and corrects two output-retrieva
 
 This release moves the SAP proxy service from the OpCon server to the SAP Agent.
 
-:::danger SAP proxy moved to the SAP Agent
-As of Release 19.1.0, the SAP proxy service is no longer installed with the SAM.
+:eight_spoked_asterisk: **SAP proxy service no longer installed with the SAM** As of Release 19.1.0, the SAP proxy service is no longer installed with the SAM.
 
-Customers who run a SAP Agent must upgrade to Release 19.1.0 when they install OpCon 19.1.0 to retain SAP proxy functionality.
+:::warning
+To continue using SAP proxy functionality, upgrade to the latest version of the SAP Agent.
 :::
 
 ## 18

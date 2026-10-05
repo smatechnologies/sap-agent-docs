@@ -53,7 +53,7 @@ Each procedure on this page begins by opening the Windows Services console. Open
 
 To open the Services console, complete the following steps:
 
-1. Go to **Start > Control Panel**.
+1. Go to **Start** > **Control Panel**.
 2. Open the **Administrative Tools** entry.
 3. Open the **Services** entry. The **Services** window displays.
 
@@ -68,8 +68,8 @@ To start both services, complete the following steps:
 
    | # | Service | Action |
    |---|---|---|
-   | 1 | **SMA OpCon Agent for SAP** | Open the service. Confirm **Startup type** is **Automatic (Delayed Start)** *(adjust if needed and select **OK**)*. Go to **Action > Start**. Confirm **Status** is **Started**. |
-   | 2 | **SMA OpCon JORS for SAP** | Open the service. Confirm **Startup type** is **Automatic (Delayed Start)** *(adjust if needed and select **OK**)*. Go to **Action > Start**. Confirm **Status** is **Started**. |
+   | 1 | **SMA OpCon Agent for SAP** | Open the service. Confirm **Startup type** is **Automatic (Delayed Start)** *(adjust if needed and select **OK**)*. Go to **Action** > **Start**. Confirm **Status** is **Started**. |
+   | 2 | **SMA OpCon JORS for SAP** | Open the service. Confirm **Startup type** is **Automatic (Delayed Start)** *(adjust if needed and select **OK**)*. Go to **Action** > **Start**. Confirm **Status** is **Started**. |
 3. Close the **Services** window.
 
 ### Stop both services
@@ -83,8 +83,8 @@ To stop both services, complete the following steps:
 
    | # | Service | Action |
    |---|---|---|
-   | 1 | **SMA OpCon Agent for SAP** | Select the service, then go to **Action > Stop**. Confirm **Status** is **Stopped**. |
-   | 2 | **SMA OpCon JORS for SAP** | Select the service, then go to **Action > Stop**. Confirm **Status** is **Stopped**. |
+   | 1 | **SMA OpCon Agent for SAP** | Select the service, then go to **Action** > **Stop**. Confirm **Status** is **Stopped**. |
+   | 2 | **SMA OpCon JORS for SAP** | Select the service, then go to **Action** > **Stop**. Confirm **Status** is **Stopped**. |
 3. Close the **Services** window.
 
 ### Restart both services

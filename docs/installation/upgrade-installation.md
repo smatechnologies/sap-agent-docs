@@ -75,15 +75,15 @@ To drain SAP work, complete the following steps:
 
 To stop both services, complete the following steps:
 
-1. On the Application server, go to **Start > Administrative Tools > Server Manager**. The **Administrative Tools** window displays.
+1. On the Application server, go to **Start** > **Administrative Tools** > **Server Manager**. The **Administrative Tools** window displays.
 2. Expand (**+**) the **Configuration** option.
 3. Select the **Services** entry. The **Services** window displays.
 4. Stop each service in the order shown:
 
    | # | Service | Action |
    |---|---|---|
-   | 1 | SMA OpCon Agent for SAP | Select the service, then go to **Action > Stop**. Confirm **Status** is **Stopped**. |
-   | 2 | SMA OpCon JORS for SAP | Select the service, then go to **Action > Stop**. Confirm **Status** is **Stopped**. |
+   | 1 | SMA OpCon Agent for SAP | Select the service, then go to **Action** > **Stop**. Confirm **Status** is **Stopped**. |
+   | 2 | SMA OpCon JORS for SAP | Select the service, then go to **Action** > **Stop**. Confirm **Status** is **Stopped**. |
 5. Close the **Services** window.
 6. Repeat this procedure for each instance of the agent on the machine.
 
@@ -95,7 +95,7 @@ Skip this phase unless you are upgrading from the 32-bit version and want to reu
 
 To remove the SAP Agent, complete the following steps:
 
-1. Go to **Start > Control Panel**. The **Control Panel** window opens.
+1. Go to **Start** > **Control Panel**. The **Control Panel** window opens.
 2. Open the **Programs and Features** entry. The **Programs and Features** window displays.
 3. Select the **SMA Agent for SAP** program.
 4. Take the action that matches your install:
@@ -117,9 +117,9 @@ To remove the SAP Agent, complete the following steps:
 
 The OpCon installer is a standard InstallShield wizard. The first three steps below get you to the wizard; the table after lists every screen and what to do on each. The upgrade flow differs from a new install at one screen — **Select Path for File Migration to ProgramData** — where you point the installer at your previous install directory so its settings are migrated forward.
 
-### Launch the installer
+### Start the installer
 
-To launch the installer, complete the following steps:
+To start the installer, complete the following steps:
 
 1. On the machine requiring the SAP Agent, log on as a Windows user with Local Administrative Rights.
 2. Exit all running applications on the desktop (including OpCon applications).
@@ -135,7 +135,7 @@ For each screen the wizard shows, take the action in the table below. The **File
 |---|---|---|
 | 1 | Choose Setup Language | Select the language and select **Next**. |
 | 2 | Welcome | Select **Next**. |
-| 3 | Select Components | Select **SMA OpCon Agents > SMA OpCon Agent for SAP**. Select **Install**. |
+| 3 | Select Components | Select **SMA OpCon Agents** > **SMA OpCon Agent for SAP**. Select **Install**. |
 | 4 | Welcome *(component installer)* | Select **Next**. |
 | 5 | Destination Folder | Change the target location or retain the default. Select **Next**. |
 | 6 | Configure Instance Name | *(Optional)* Enter a unique instance name. Select **Next**. |
@@ -168,7 +168,7 @@ To delete the old SAP Agent directory, complete the following steps:
 2. Select **Explore** from the menu.
 3. Browse to the old SAP Agent directory in the explorer window.
 4. Select the **"0"** folder.
-5. Go to **File > Delete**.
+5. Go to **File** > **Delete**.
 6. Select **OK** to **Confirm File Delete**.
 7. Close the **Explorer** window.
 
@@ -180,11 +180,11 @@ After the install completes and the **Log on as** account is reapplied, restart 
 
 To restart the agent service, complete the following steps:
 
-1. On the Application server, go to **Start > Administrative Tools > Server Manager**. The **Administrative Tools** window displays.
+1. On the Application server, go to **Start** > **Administrative Tools** > **Server Manager**. The **Administrative Tools** window displays.
 2. Expand (**+**) the **Configuration** option.
 3. Select the **Services** entry. The **Services** window displays.
 4. In the **Services** list, select **SMA OpCon Agent for SAP**.
-5. Go to **Action > Start**.
+5. Go to **Action** > **Start**.
 6. Confirm the *Service's* **Status** is **Started**.
 
 :::tip
