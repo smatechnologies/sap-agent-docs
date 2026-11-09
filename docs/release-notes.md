@@ -15,6 +15,22 @@ This page lists changes for each SAP Agent release, organized by major version. 
 - :eight_spoked_asterisk: — New feature or enhancement
 - :white_check_mark: — Bug fix
 
+## 22
+
+### 22.0.0
+
+2026 November
+
+### What's new
+
+:eight_spoked_asterisk: **OCAG-1188**: Added automatic TLS certificate management for the SAP Agent, so certificates are requested, installed, and renewed automatically without manual intervention.
+
+:eight_spoked_asterisk: **OCAG-1248**: Updated the SAP Agent to run on a modern .NET runtime and combined its separate background transfer process into a single service.
+
+:eight_spoked_asterisk: **OCAG-1324**: Added the ability to remotely upgrade the SAP Agent directly from Solution Manager, without needing to run the installer manually on the agent machine.
+
+:white_check_mark: **OCAG-1564**: Fixed an issue where the SAP Agent slowed down under heavy load when OpCon sent status requests for jobs that had already finished, which could leave new jobs stuck in Still Attempting Start. The agent now answers these requests without delay.
+
 ## 21
 
 ### 21.0.0
